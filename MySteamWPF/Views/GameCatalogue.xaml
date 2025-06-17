@@ -4,14 +4,14 @@
              xmlns:local="clr-namespace:MySteamWPF.Views"
              xmlns:models="clr-namespace:MySteamWPF.Core.Data"
              xmlns:models1="clr-namespace:MySteamWPF.Core.Models"
-             xmlns:utilities="clr-namespace:MySteamWPF.Core.Utilities"
-             Background="White">
+             xmlns:utilities="clr-namespace:MySteamWPF.Core.Utilities">
 
     <UserControl.Resources>
         <utilities:ImagePathToBitmapConverter x:Key="ImagePathConverter"/>
 
         <DataTemplate x:Key="GameItemTemplate" DataType="{x:Type models1:Game}">
             <Border BorderBrush="Gray"
+                    Background="AliceBlue"
                     BorderThickness="1"
                     Padding="10"
                     Margin="10"
