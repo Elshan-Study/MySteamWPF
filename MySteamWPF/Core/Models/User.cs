@@ -5,11 +5,13 @@ namespace MySteamWPF.Core.Models;
 /// </summary>
 public class User(string id, string login, string name, string email, string password)
 {
-    public string Id { get; init; } = id;
-    public string Login { get; init; } = login;
+    public string Id { get; init; } = id; 
+    
+    public string AvatarPath {get; set;} = "Images/Avatars/DefaultAvatar.jpg";
+    public string Login { get; set; } = login;
     public string Name { get; set; } = name;
-    public string Email { get; init; } = email;
-    public string Password { get; init; } = password;
+    public string Email { get; set; } = email;
+    public string Password { get; set; } = password;
 
     public decimal Balance { get; set; } = 0;
     public List<string> Games { get; set; } = [];

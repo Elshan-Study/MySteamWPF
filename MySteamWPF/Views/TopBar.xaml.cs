@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Navigation;
 using MySteamWPF.Core.Services;
 
 namespace MySteamWPF.Views
@@ -40,7 +41,7 @@ namespace MySteamWPF.Views
             if (loginWindow.ShowDialog() == true)
             {
                 UpdateVisibility();
-                ((MainWindow)Application.Current.MainWindow).MainContentControl.Content = new UserProfilePage();
+                ((MainWindow)Application.Current.MainWindow).MainContentControl.Content = new UserDashboard();
             }
         }
 
@@ -49,11 +50,12 @@ namespace MySteamWPF.Views
             AccountManager.Logout();
             UpdateVisibility();
             MessageBox.Show("Вы вышли из аккаунта.");
+            ((MainWindow)Application.Current.MainWindow).MainContentControl.Content = new GameCatalogue();
         }
 
         private void OnProfileClicked(object sender, RoutedEventArgs e)
         {
-            ((MainWindow)Application.Current.MainWindow).MainContentControl.Content = new UserProfilePage();
+            ((MainWindow)Application.Current.MainWindow).MainContentControl.Content = new UserDashboard();
         }
     }
 }

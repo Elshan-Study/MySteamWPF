@@ -24,7 +24,6 @@ public partial class LoginWindow
 
         try
         {
-            // Попробуем найти по email, если не получилось — по логину
             try
             {
                 AccountManager.LoginByEmail(id, password);

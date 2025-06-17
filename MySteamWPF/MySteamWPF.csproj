@@ -10,10 +10,10 @@
 
     <ItemGroup>
       <Folder Include="Core\" />
-      <Folder Include="Images\" />
       <Content Include="Images\**\*.*">
 	      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
+      <Folder Include="Images\Avatars\" />
     </ItemGroup>
 
 </Project>
