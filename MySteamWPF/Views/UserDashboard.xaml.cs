@@ -21,6 +21,7 @@ namespace MySteamWPF.Views
         public UserDashboard()
         {
             InitializeComponent();
+            Tag = "ShowVisible";
 
             _user = AccountManager.CurrentUser!;
             _visibleGames = GetUserGames(_user.Games);
@@ -56,6 +57,7 @@ namespace MySteamWPF.Views
 
         private void ShowVisibleGames()
         {
+            Tag = "ShowVisible";
             _showingHidden = false;
             GamesList.ItemsSource = _visibleGames;
             NoGamesTextBlock.Visibility = _visibleGames.Any() ? Visibility.Collapsed : Visibility.Visible;
@@ -63,6 +65,7 @@ namespace MySteamWPF.Views
 
         private void ShowHiddenGames()
         {
+            Tag = "ShowHidden";
             _showingHidden = true;
             GamesList.ItemsSource = _hiddenGames;
             NoGamesTextBlock.Visibility = _hiddenGames.Any() ? Visibility.Collapsed : Visibility.Visible;
@@ -88,30 +91,6 @@ namespace MySteamWPF.Views
                 ShowVisibleGames();
             else
                 ShowHiddenGames();
-        }
-
-        private void OnHideGameClicked(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button btn && btn.DataContext is Game game)
-            {
-                _user.Games.Remove(game.Id);
-                _user.HiddenGames.Add(game.Id);
-                _visibleGames = GetUserGames(_user.Games);
-                _hiddenGames = GetUserGames(_user.HiddenGames);
-                ShowVisibleGames();
-            }
-        }
-
-        private void OnUnhideGameClicked(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button btn && btn.DataContext is Game game)
-            {
-                _user.HiddenGames.Remove(game.Id);
-                _user.Games.Add(game.Id);
-                _visibleGames = GetUserGames(_user.Games);
-                _hiddenGames = GetUserGames(_user.HiddenGames);
-                ShowHiddenGames();
-            }
         }
 
         private void OnTopUpClicked(object sender, RoutedEventArgs e)
@@ -257,11 +236,45 @@ namespace MySteamWPF.Views
             MessageBox.Show("Пароль успешно изменён.", "Успех", MessageBoxButton.OK, 
                 MessageBoxImage.Information);
         }
-
+        
+        private void OnGameClicked(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is FrameworkElement element && element.DataContext is Game selectedGame)
+            {
+                GamePage.CurrentGame = selectedGame;
+                ((MainWindow)Application.Current.MainWindow).MainContentControl.Content = new GamePage();
+            }
+        }
+        
+        private void OnHideUnhideClicked(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is Game game)
+            {
+                if (_showingHidden)
+                {
+                    _user.HiddenGames.Remove(game.Id);
+                    _user.Games.Add(game.Id);
+                    _visibleGames = GetUserGames(_user.Games);
+                    _hiddenGames = GetUserGames(_user.HiddenGames);
+                    ShowHiddenGames();
+                }
+                else
+                {
+                    _user.Games.Remove(game.Id);
+                    _user.HiddenGames.Add(game.Id);
+                    _visibleGames = GetUserGames(_user.Games);
+                    _hiddenGames = GetUserGames(_user.HiddenGames);
+                    ShowVisibleGames();
+                }
+            }
+        }
+        
         private void SearchTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
                 OnSearch(sender, e);
         }
     }
+
+
 }

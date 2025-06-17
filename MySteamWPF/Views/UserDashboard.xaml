@@ -3,10 +3,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:models="clr-namespace:MySteamWPF.Core.Models"
+             xmlns:utilities="clr-namespace:MySteamWPF.Core.Utilities"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="800"
              Background="CadetBlue">
 
+    <UserControl.Resources>
+        <utilities:HideUnhideConverter x:Key="HideUnhideConverter"/>
+        <utilities:ImagePathToBitmapConverter x:Key="ImagePathConverter"/>
+    </UserControl.Resources>
+    
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -56,22 +63,60 @@
         <!-- Список игр -->
         <ScrollViewer Grid.Row="2">
             <StackPanel>
-                <ItemsControl x:Name="GamesList">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Border BorderBrush="Gray" BorderThickness="1" Margin="5" Padding="5">
-                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                    <TextBlock Text="Название: " FontWeight="Bold"/>
-                                    <TextBlock Text="{Binding Name}" Margin="5 0"/>
-                                    <Button Content="Скрыть" Margin="10 0 0 0" Click="OnHideGameClicked"
-                                            Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Tag, Converter={StaticResource VisibilityForHideConverter}}"/>
-                                    <Button Content="Показать" Margin="10 0 0 0" Click="OnUnhideGameClicked"
-                                            Visibility="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Tag, Converter={StaticResource VisibilityForUnhideConverter}}"/>
-                                </StackPanel>
+                <ListBox x:Name="GamesList" Margin="0,10" BorderThickness="0" Background="Transparent">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="{x:Type models:Game}">
+                            <Border BorderBrush="Gray"
+                                    Background="AliceBlue"
+                                    BorderThickness="1"
+                                    Padding="10"
+                                    Margin="10"
+                                    CornerRadius="5"
+                                    Width="400"
+                                    MouseLeftButtonUp="OnGameClicked"
+                                    Cursor="Hand">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Image Source="{Binding ImagePath, Converter={StaticResource ImagePathConverter}}"
+                                           Width="100" Height="100" Margin="0,0,10,0"/>
+                    
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="16"/>
+                                        <TextBlock Text="{Binding Description}" TextWrapping="Wrap" MaxHeight="40"/>
+                                        <TextBlock Text="{Binding AverageRating, StringFormat=Рейтинг: {0:F2}/5}"
+                                                   Foreground="Goldenrod" Margin="0,5,0,0"/>
+                                        <ItemsControl ItemsSource="{Binding Tags}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel Orientation="Horizontal"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border Background="LightGray" CornerRadius="3" Padding="2" Margin="2">
+                                                        <TextBlock Text="{Binding}" FontSize="12"/>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="2" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                        <Button 
+                                            Content="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Tag, Converter={StaticResource HideUnhideConverter}}" 
+                                            Click="OnHideUnhideClicked" 
+                                            Tag="{Binding}" />
+                                    </StackPanel>
+                                </Grid>
                             </Border>
                         </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                    </ListBox.ItemTemplate>
+                </ListBox>
                 <TextBlock x:Name="NoGamesTextBlock" Text="Нет игр для отображения." Visibility="Collapsed" FontStyle="Italic" HorizontalAlignment="Center" Margin="0 20"/>
             </StackPanel>
         </ScrollViewer>

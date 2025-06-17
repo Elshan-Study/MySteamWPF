@@ -14,6 +14,6 @@ public class User(string id, string login, string name, string email, string pas
     public string Password { get; set; } = password;
 
     public decimal Balance { get; set; } = 0;
-    public List<string> Games { get; set; } = [];
-    public List<string> HiddenGames { get; set; } = [];
+    public List<string> Games { get; set; } = []; //id of game
+    public List<string> HiddenGames { get; set; } = [];//id of game
 }
