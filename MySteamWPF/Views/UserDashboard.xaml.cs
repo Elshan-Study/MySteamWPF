@@ -7,7 +7,6 @@ using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using MySteamWPF.Core.Utilities;
 
 namespace MySteamWPF.Views
@@ -205,7 +204,7 @@ namespace MySteamWPF.Views
         private void OnChangeEmailClicked(object sender, RoutedEventArgs e)
         {
             var input = Microsoft.VisualBasic.Interaction.InputBox("Введите новый email:", 
-                "Изменить email", _user.Email ?? "");
+                "Изменить email", _user.Email);
 
             if (string.IsNullOrWhiteSpace(input) || input == _user.Email)
                 return;
