@@ -1,0 +1,12 @@
+﻿<Window x:Class="MySteamWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:views="clr-namespace:MySteamWPF.Views"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MySteam" Height="720" Width="1280">
+    <DockPanel>
+        <views:TopBar DockPanel.Dock="Top"/>
+
+        
+        <ContentControl x:Name="MainContentControl"/>
+    </DockPanel>
+</Window>

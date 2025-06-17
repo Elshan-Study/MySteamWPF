@@ -1,0 +1,15 @@
+<UserControl x:Class="MySteamWPF.Views.TopBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:MySteamWPF.Views"
+             Height="50" Background="DarkSlateGray">
+    <DockPanel LastChildFill="False">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
+            <Button Content="Главная страница" Margin="5" Click="OnHomeClicked"/>
+            <Button Content="Регистрация" Margin="5" Click="OnRegisterClicked"/>
+            <Button Content="Войти" Margin="5" Click="OnLoginClicked" x:Name="LoginButton"/>
+            <Button Content="Профиль" Margin="5" Click="OnProfileClicked" x:Name="ProfileButton"/>
+            <Button Content="Выйти" Margin="5" Click="OnLogoutClicked" x:Name="LogoutButton"/>
+        </StackPanel>
+    </DockPanel>
+</UserControl>

@@ -1,0 +1,26 @@
+<Window x:Class="MySteamWPF.Views.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Вход в аккаунт" Height="250" Width="400"
+        WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Логин или Email:"/>
+        <TextBox Grid.Row="1" x:Name="IdentifierBox" Margin="0,5"/>
+
+        <TextBlock Grid.Row="2" Text="Пароль:" Margin="0,10,0,0"/>
+        <PasswordBox Grid.Row="3" x:Name="PasswordBox" Margin="0,5"/>
+
+        <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,15,0,0" HorizontalAlignment="Right">
+            <Button Content="Войти" Height="30" Width="100" Margin="5" Click="Login_Click"/>
+            <Button Content="Отмена" Height="30" Width="100" Margin="5" Click="Cancel_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

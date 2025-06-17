@@ -1,0 +1,24 @@
+<Window x:Class="MySteamWPF.Views.RegisterWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Регистрация" Height="350" Width="400"
+        WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+    <StackPanel Margin="20">
+        <TextBlock Text="Логин:"/>
+        <TextBox x:Name="LoginBox" Margin="0,5"/>
+
+        <TextBlock Text="Email:" Margin="0,10,0,0"/>
+        <TextBox x:Name="EmailBox" Margin="0,5"/>
+
+        <TextBlock Text="Имя:" Margin="0,10,0,0"/>
+        <TextBox x:Name="NameBox" Margin="0,5"/>
+
+        <TextBlock Text="Пароль:" Margin="0,10,0,0"/>
+        <PasswordBox x:Name="PasswordBox" Margin="0,5"/>
+
+        <StackPanel Orientation="Horizontal" Margin="0,20,0,0" HorizontalAlignment="Right">
+            <Button Content="Зарегистрироваться" Width="150" Margin="5" Click="Register_Click"/>
+            <Button Content="Отмена" Width="100" Margin="5" Click="Cancel_Click"/>
+        </StackPanel>
+    </StackPanel>
+</Window>
