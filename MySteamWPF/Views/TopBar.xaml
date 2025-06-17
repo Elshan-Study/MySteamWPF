@@ -5,11 +5,33 @@
              Height="50" Background="DarkSlateGray">
     <DockPanel LastChildFill="False">
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
-            <Button Content="Главная страница" Margin="5" Click="OnHomeClicked"/>
-            <Button Content="Регистрация" Margin="5" Click="OnRegisterClicked"/>
-            <Button Content="Войти" Margin="5" Click="OnLoginClicked" x:Name="LoginButton"/>
-            <Button Content="Профиль" Margin="5" Click="OnProfileClicked" x:Name="ProfileButton"/>
-            <Button Content="Выйти" Margin="5" Click="OnLogoutClicked" x:Name="LogoutButton"/>
+            <StackPanel.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="Background" Value="CadetBlue"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="Padding" Value="8,4"/>
+                    <Setter Property="Margin" Value="4"/>
+                    <Setter Property="Cursor" Value="Hand"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}"
+                                        CornerRadius="10"
+                                        Padding="{TemplateBinding Padding}">
+                                    <ContentPresenter HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </StackPanel.Resources>
+
+            <Button Content="Главная страница" Click="OnHomeClicked"/>
+            <Button Content="Регистрация" Click="OnRegisterClicked"/>
+            <Button Content="Войти" Click="OnLoginClicked" x:Name="LoginButton"/>
+            <Button Content="Профиль" Click="OnProfileClicked" x:Name="ProfileButton"/>
+            <Button Content="Выйти" Click="OnLogoutClicked" x:Name="LogoutButton"/>
         </StackPanel>
     </DockPanel>
 </UserControl>
