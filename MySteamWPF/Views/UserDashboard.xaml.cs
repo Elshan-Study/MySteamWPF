@@ -12,7 +12,7 @@ namespace MySteamWPF.Views
 {
     public partial class UserDashboard : UserControl
     {
-        private User _user;
+        private readonly User _user;
         private List<Game> _visibleGames;
         private List<Game> _hiddenGames;
         private bool _showingHidden;
@@ -243,7 +243,7 @@ namespace MySteamWPF.Views
         
         private void OnGameClicked(object sender, MouseButtonEventArgs e)
         {
-            if (sender is FrameworkElement element && element.DataContext is Game selectedGame)
+            if (sender is FrameworkElement { DataContext: Game selectedGame })
             {
                 GamePage.CurrentGame = selectedGame;
                 ((MainWindow)Application.Current.MainWindow).MainContentControl.Content = new GamePage();
@@ -252,7 +252,7 @@ namespace MySteamWPF.Views
         
         private void OnHideUnhideClicked(object sender, RoutedEventArgs e)
         {
-            if (sender is Button btn && btn.Tag is Game game)
+            if (sender is Button { Tag: Game game })
             {
                 if (_showingHidden)
                 {

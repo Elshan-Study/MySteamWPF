@@ -13,7 +13,7 @@ namespace MySteamWPF.Views
             UpdateVisibility();
         }
 
-        private void UpdateVisibility()
+        public void UpdateVisibility()
         {
             bool loggedIn = AccountManager.CurrentUser != null;
             LoginButton.Visibility = loggedIn ? Visibility.Collapsed : Visibility.Visible;

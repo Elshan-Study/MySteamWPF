@@ -25,4 +25,10 @@ public partial class MainWindow : Window
         MainContentControl.Content = new GameCatalogue();
         DataManager.SaveAll();
     }
+    
+    public void UpdateTopBar()
+    {
+        TopBarControl.UpdateVisibility();
+    }
+
 }

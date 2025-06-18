@@ -28,5 +28,9 @@
             <Setter Property="Background" Value="#FF1E1E1E"/>
             <Setter Property="Foreground" Value="White"/>
         </Style>
+        
+        <Style TargetType="ScrollViewer">
+            <EventSetter Event="PreviewMouseWheel" Handler="ScrollViewer_PreviewMouseWheel"/>
+        </Style>
     </Application.Resources>
 </Application>

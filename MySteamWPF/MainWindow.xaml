@@ -5,7 +5,7 @@
         Title="MySteam" Height="720" Width="1280"
         Background="CadetBlue">
     <DockPanel>
-        <views:TopBar DockPanel.Dock="Top"/>
+        <views:TopBar x:Name="TopBarControl" DockPanel.Dock="Top"/>
 
         
         <ContentControl x:Name="MainContentControl"/>
