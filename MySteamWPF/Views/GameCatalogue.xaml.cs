@@ -1,8 +1,8 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using MySteamWPF.Core.Data;
 using MySteamWPF.Core.Models;
+using MySteamWPF.Core.Services;
 
 namespace MySteamWPF.Views
 {
@@ -15,7 +15,7 @@ namespace MySteamWPF.Views
         {
             InitializeComponent();
 
-            _allGames = Database.Games ?? new List<Game>();
+            _allGames = DataManager.Games ?? new List<Game>();
             _filteredGames = _allGames;
 
             GamesListBox.ItemsSource = _filteredGames;

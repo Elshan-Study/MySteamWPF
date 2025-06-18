@@ -3,18 +3,18 @@ using System.Text.Json;
 using MySteamWPF.Core.Models;
 using MySteamWPF.Core.Utilities;
 
-namespace MySteamWPF.Core.Data;
+namespace MySteamWPF.Core.Services;
 
 /// <summary>
 /// The class is responsible for loading and saving user, game and comment data from/to JSON files.
 /// </summary>
-internal static class Database
+internal static class DataManager
 {
     /// <summary>
     /// The base folder where all JSON files with data are stored.
     /// </summary>
-    private static readonly string BasePath = "Data";
-    
+    private const string BasePath = "Core/Data";
+
     /// <summary>
     /// List of registered users.
     /// </summary>
@@ -66,7 +66,7 @@ internal static class Database
         }
         catch (Exception ex)
         {
-            Logger.LogException(ex, "Database");
+            Logger.LogException(ex, "DataManager");
             return default;
         }
     }

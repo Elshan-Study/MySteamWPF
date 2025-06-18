@@ -152,7 +152,7 @@
 //
 //         var comment = new Comment(user.Name, user.Id, CurrentGame!.Id, message);
 //         CurrentGame.Comments.Add(comment);
-//         Database.Comments.Add(comment);
+//         DataManager.Comments.Add(comment);
 //
 //         Logger.Log($"[GamePage] {user.Login} left comment on {CurrentGame.Name}: \"{message}\"");
 //         Console.WriteLine("Comment posted!");

@@ -8,7 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using MySteamWPF.Core.Data;
+using MySteamWPF.Core.Services;
 using MySteamWPF.Views;
 
 namespace MySteamWPF;
@@ -20,9 +20,9 @@ public partial class MainWindow : Window
 {
     public MainWindow()
     {
-        Database.LoadAll();
+        DataManager.LoadAll();
         InitializeComponent();
         MainContentControl.Content = new GameCatalogue();
-        Database.SaveAll();
+        DataManager.SaveAll();
     }
 }

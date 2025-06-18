@@ -1,0 +1,274 @@
+[
+  {
+    "Id": "game-001",
+    "Name": "Frostblade",
+    "Description": "An epic journey through the icy realms of the north.",
+    "Price": 29.99,
+    "Tags": [
+      "RPG",
+      "Adventure",
+      "Fantasy"
+    ],
+    "Comments": [
+      {
+        "Id": "cmt-001",
+        "AuthorName": "Alice",
+        "AuthorId": "user-001",
+        "GameId": "game-001",
+        "Message": "\u041F\u043E\u0433\u0440\u0443\u0436\u0430\u044E\u0449\u0430\u044F \u0430\u0442\u043C\u043E\u0441\u0444\u0435\u0440\u0430! \u041E\u0447\u0435\u043D\u044C \u043F\u043E\u043D\u0440\u0430\u0432\u0438\u043B\u0441\u044F \u0441\u043D\u0435\u0433 \u0438 \u0441\u044E\u0436\u0435\u0442.",
+        "DatePosted": "2025-06-01T10:00:00Z"
+      },
+      {
+        "Id": "cmt-002",
+        "AuthorName": "Bob",
+        "AuthorId": "user-002",
+        "GameId": "game-001",
+        "Message": "\u041C\u0435\u0441\u0442\u0430\u043C\u0438 \u0437\u0430\u0442\u044F\u043D\u0443\u0442\u043E, \u043D\u043E \u0432\u0438\u0437\u0443\u0430\u043B \u0432\u0435\u043B\u0438\u043A\u043E\u043B\u0435\u043F\u0435\u043D.",
+        "DatePosted": "2025-06-02T14:15:00Z"
+      }
+    ],
+    "Ratings": {
+      "user-001": 5,
+      "user-002": 4
+    },
+    "ImagePath": "Images/Frostblade.jpg",
+    "AverageRating": 4.5
+  },
+  {
+    "Id": "game-002",
+    "Name": "Cyber Run",
+    "Description": "Fast-paced cyberpunk racing game with neural controls.",
+    "Price": 19.99,
+    "Tags": [
+      "Racing",
+      "Cyberpunk",
+      "Arcade"
+    ],
+    "Comments": [
+      {
+        "Id": "cmt-003",
+        "AuthorName": "Charlie",
+        "AuthorId": "user-003",
+        "GameId": "game-002",
+        "Message": "\u041A\u043B\u0430\u0441\u0441\u043D\u044B\u0435 \u0442\u0430\u0447\u043A\u0438! \u0418\u0433\u0440\u0430\u043B \u0431\u0435\u0437 \u043E\u0441\u0442\u0430\u043D\u043E\u0432\u043A\u0438.",
+        "DatePosted": "2025-06-02T15:10:00Z"
+      }
+    ],
+    "Ratings": {
+      "user-001": 3,
+      "user-003": 4
+    },
+    "ImagePath": "Images/CyberRun.jpg",
+    "AverageRating": 3.5
+  },
+  {
+    "Id": "game-003",
+    "Name": "Mystic Forest",
+    "Description": "A mysterious puzzle game set in an enchanted forest.",
+    "Price": 14.99,
+    "Tags": [
+      "Puzzle",
+      "Mystery",
+      "Casual"
+    ],
+    "Comments": [
+      {
+        "Id": "cmt-004",
+        "AuthorName": "Alice",
+        "AuthorId": "user-001",
+        "GameId": "game-003",
+        "Message": "\u041B\u0435\u0433\u043A\u0430\u044F \u0438 \u043A\u0440\u0430\u0441\u0438\u0432\u0430\u044F \u0438\u0433\u0440\u0430 \u043D\u0430 \u0432\u0435\u0447\u0435\u0440.",
+        "DatePosted": "2025-06-03T09:00:00Z"
+      }
+    ],
+    "Ratings": {
+      "user-002": 5
+    },
+    "ImagePath": "Images/MysticForest.jpg",
+    "AverageRating": 5
+  },
+  {
+    "Id": "game-004",
+    "Name": "Titan Siege",
+    "Description": "Massive multiplayer battles in a mythological world.",
+    "Price": 49.99,
+    "Tags": [
+      "MMO",
+      "Fantasy",
+      "PvP"
+    ],
+    "Comments": [
+      {
+        "Id": "cmt-005",
+        "AuthorName": "Bob",
+        "AuthorId": "user-002",
+        "GameId": "game-004",
+        "Message": "\u041B\u0430\u0433\u0438 \u0432 PvP, \u043D\u043E \u0441\u0430\u043C \u043C\u0438\u0440 \u0438\u043D\u0442\u0435\u0440\u0435\u0441\u043D\u044B\u0439.",
+        "DatePosted": "2025-06-03T10:00:00Z"
+      }
+    ],
+    "Ratings": {
+      "user-001": 4,
+      "user-003": 5
+    },
+    "ImagePath": "Images/TitanSiege.jpg",
+    "AverageRating": 4.5
+  },
+  {
+    "Id": "game-005",
+    "Name": "Pixel Kingdom",
+    "Description": "A nostalgic pixel-art strategy game.",
+    "Price": 9.99,
+    "Tags": [
+      "Strategy",
+      "Pixel",
+      "Indie"
+    ],
+    "Comments": [
+      {
+        "Id": "cmt-006",
+        "AuthorName": "Charlie",
+        "AuthorId": "user-003",
+        "GameId": "game-005",
+        "Message": "\u041F\u0438\u043A\u0441\u0435\u043B\u0438 \u2014 \u043B\u044E\u0431\u043E\u0432\u044C. \u0416\u0430\u043B\u044C, \u0447\u0442\u043E \u043A\u043E\u0440\u043E\u0442\u043A\u0430\u044F.",
+        "DatePosted": "2025-06-04T11:30:00Z"
+      }
+    ],
+    "Ratings": {
+      "user-002": 3
+    },
+    "ImagePath": "Images/PixelKingdom.jpg",
+    "AverageRating": 3
+  },
+  {
+    "Id": "game-006",
+    "Name": "Quantum Dash",
+    "Description": "Sci-fi action with time-manipulation mechanics.",
+    "Price": 24.99,
+    "Tags": [
+      "Action",
+      "Sci-Fi",
+      "Shooter"
+    ],
+    "Comments": [
+      {
+        "Id": "cmt-007",
+        "AuthorName": "Alice",
+        "AuthorId": "user-001",
+        "GameId": "game-006",
+        "Message": "\u041D\u0440\u0430\u0432\u0438\u0442\u0441\u044F \u0443\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u0438\u0435 \u0432\u0440\u0435\u043C\u0435\u043D\u0435\u043C, \u043D\u0435\u043E\u0431\u044B\u0447\u043D\u043E!",
+        "DatePosted": "2025-06-05T12:00:00Z"
+      }
+    ],
+    "Ratings": {
+      "user-003": 4
+    },
+    "ImagePath": "Images/QuantumDash.jpg",
+    "AverageRating": 4
+  },
+  {
+    "Id": "game-007",
+    "Name": "Sunken Realms",
+    "Description": "Explore the mysteries of an underwater civilization.",
+    "Price": 17.99,
+    "Tags": [
+      "Exploration",
+      "Ocean",
+      "Adventure"
+    ],
+    "Comments": [
+      {
+        "Id": "cmt-008",
+        "AuthorName": "Bob",
+        "AuthorId": "user-002",
+        "GameId": "game-007",
+        "Message": "\u041C\u043E\u0440\u0435, \u043A\u0432\u0435\u0441\u0442\u044B, \u0437\u0430\u0433\u0430\u0434\u043A\u0438 \u2014 \u043F\u0440\u043E\u0441\u0442\u043E \u0442\u043E\u043F.",
+        "DatePosted": "2025-06-06T13:00:00Z"
+      }
+    ],
+    "Ratings": {
+      "user-001": 5
+    },
+    "ImagePath": "Images/SunkenRealms.jpg",
+    "AverageRating": 5
+  },
+  {
+    "Id": "game-008",
+    "Name": "Neon Arena",
+    "Description": "Top-down shooter with neon aesthetics and fast combat.",
+    "Price": 12.99,
+    "Tags": [
+      "Shooter",
+      "Arcade",
+      "Indie"
+    ],
+    "Comments": [
+      {
+        "Id": "cmt-009",
+        "AuthorName": "Charlie",
+        "AuthorId": "user-003",
+        "GameId": "game-008",
+        "Message": "\u0412\u0438\u0437\u0443\u0430\u043B\u044C\u043D\u043E \u043A\u0440\u0430\u0441\u0438\u0432\u043E, \u043D\u043E \u0441\u043A\u0443\u0447\u043D\u043E \u043E\u0434\u043D\u043E\u043C\u0443.",
+        "DatePosted": "2025-06-07T14:00:00Z"
+      }
+    ],
+    "Ratings": {
+      "user-002": 4
+    },
+    "ImagePath": "Images/NeonArena.jpg",
+    "AverageRating": 4
+  },
+  {
+    "Id": "game-009",
+    "Name": "Witchlight Academy",
+    "Description": "Live the life of a student in a magical school.",
+    "Price": 15.99,
+    "Tags": [
+      "Visual Novel",
+      "Magic",
+      "Simulation"
+    ],
+    "Comments": [
+      {
+        "Id": "cmt-010",
+        "AuthorName": "Alice",
+        "AuthorId": "user-001",
+        "GameId": "game-009",
+        "Message": "\u0428\u043A\u043E\u043B\u0430 \u043C\u0430\u0433\u0438\u0438 \u043D\u0430\u0432\u0435\u044F\u043B\u0430 \u0413\u0430\u0440\u0440\u0438 \u041F\u043E\u0442\u0442\u0435\u0440\u0430.",
+        "DatePosted": "2025-06-08T15:00:00Z"
+      }
+    ],
+    "Ratings": {
+      "user-003": 5
+    },
+    "ImagePath": "Images/WitchlightAcademy.jpg",
+    "AverageRating": 5
+  },
+  {
+    "Id": "game-010",
+    "Name": "Steel Horizon",
+    "Description": "Naval warfare meets dieselpunk tactics.",
+    "Price": 39.99,
+    "Tags": [
+      "Tactics",
+      "War",
+      "Dieselpunk"
+    ],
+    "Comments": [
+      {
+        "Id": "cmt-011",
+        "AuthorName": "Bob",
+        "AuthorId": "user-002",
+        "GameId": "game-010",
+        "Message": "\u041E\u0442\u043B\u0438\u0447\u043D\u044B\u0439 \u0434\u0438\u0437\u0435\u043B\u044C\u043F\u0430\u043D\u043A \u0444\u043B\u043E\u0442, \u043F\u0440\u0438\u044F\u0442\u043D\u043E \u0443\u0434\u0438\u0432\u043B\u0435\u043D!",
+        "DatePosted": "2025-06-09T16:00:00Z"
+      }
+    ],
+    "Ratings": {
+      "user-001": 4,
+      "user-002": 4
+    },
+    "ImagePath": "Images/SteelHorizon.jpg",
+    "AverageRating": 4
+  }
+]

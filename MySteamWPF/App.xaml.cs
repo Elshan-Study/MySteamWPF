@@ -1,7 +1,7 @@
 ﻿using System.Configuration;
 using System.Data;
 using System.Windows;
-using MySteamWPF.Core.Data;
+using MySteamWPF.Core.Services;
 
 namespace MySteamWPF;
 
@@ -15,13 +15,13 @@ public partial class App : Application
         base.OnStartup(e);
 
         // Загрузка всех данных из JSON
-        Database.LoadAll();
+        DataManager.LoadAll();
     }
 
     protected override void OnExit(ExitEventArgs e)
     {
         // Сохранение всех данных в JSON
-        Database.SaveAll();
+        DataManager.SaveAll();
 
         base.OnExit(e);
     }

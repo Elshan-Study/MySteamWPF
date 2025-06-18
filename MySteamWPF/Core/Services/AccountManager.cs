@@ -1,4 +1,3 @@
-using MySteamWPF.Core.Data;
 using MySteamWPF.Core.Exceptions;
 using MySteamWPF.Core.Models;
 using MySteamWPF.Core.Utilities;
@@ -36,14 +35,14 @@ public static class AccountManager
             string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
             throw new ArgumentException("All fields must be filled.");
 
-        if (Database.Users.Any(u => u.Login == login || u.Email == email))
+        if (DataManager.Users.Any(u => u.Login == login || u.Email == email))
             throw new UserExistsException("A user with this login or email already exists.");
 
         var hashedPassword = PasswordHasher.Hash(password);
         var id = Guid.NewGuid().ToString();
 
         var newUser = new User(id, login, name, email, hashedPassword);
-        Database.Users.Add(newUser);
+        DataManager.Users.Add(newUser);
 
         Notify?.Invoke($"User {login} successfully registered.");
         Logger.Log($"User {login} created");
@@ -62,7 +61,7 @@ public static class AccountManager
         if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
             throw new ArgumentException("Email and password are required.");
 
-        var user = Database.Users.FirstOrDefault(u => u.Email == email)
+        var user = DataManager.Users.FirstOrDefault(u => u.Email == email)
                    ?? throw new UserSearchException("User not found.");
         
         if (!PasswordHasher.Verify(password, user.Password))
@@ -85,7 +84,7 @@ public static class AccountManager
         if (string.IsNullOrWhiteSpace(login) || string.IsNullOrWhiteSpace(password))
             throw new ArgumentException("Login and password are required.");
 
-        var user = Database.Users.FirstOrDefault(u => u.Login == login)
+        var user = DataManager.Users.FirstOrDefault(u => u.Login == login)
                    ?? throw new UserSearchException("User not found.");
         
         if (!PasswordHasher.Verify(password, user.Password))

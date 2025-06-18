@@ -1,5 +1,4 @@
 using System.Windows.Controls;
-using MySteamWPF.Core.Data;
 using MySteamWPF.Core.Models;
 using MySteamWPF.Core.Services;
 using Microsoft.Win32;
@@ -33,8 +32,8 @@ namespace MySteamWPF.Views
 
         private List<Game> GetUserGames(List<string> gameIds)
         {
-            if (Database.Games != null)
-                return Database.Games
+            if (DataManager.Games != null)
+                return DataManager.Games
                     .Where(g => gameIds.Contains(g.Id))
                     .ToList();
             return [];
@@ -167,7 +166,7 @@ namespace MySteamWPF.Views
                 return;
             }
 
-            if (Database.Users.Any(u => u.Login.Equals(input, StringComparison.OrdinalIgnoreCase)))
+            if (DataManager.Users.Any(u => u.Login.Equals(input, StringComparison.OrdinalIgnoreCase)))
             {
                 MessageBox.Show("Этот логин уже используется.", "Ошибка", MessageBoxButton.OK,
                     MessageBoxImage.Error);
@@ -197,7 +196,7 @@ namespace MySteamWPF.Views
                 return;
             }
             
-            if (Database.Users.Any(u => u.Email.Equals(input, StringComparison.OrdinalIgnoreCase)))
+            if (DataManager.Users.Any(u => u.Email.Equals(input, StringComparison.OrdinalIgnoreCase)))
             {
                 MessageBox.Show("Этот email уже используется.", "Ошибка", MessageBoxButton.OK,
                     MessageBoxImage.Error);

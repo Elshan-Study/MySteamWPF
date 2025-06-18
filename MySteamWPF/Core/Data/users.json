@@ -1,0 +1,72 @@
+[
+  {
+    "Id": "e977d8e9-d529-4272-9fd2-4638a6ec582c",
+    "AvatarPath": "Images\\Avatars\\090f1cd9-2c92-4c3d-b15f-9a237eafdac6.jpg",
+    "Login": "root",
+    "Name": "ROO",
+    "Email": "root@rt.az",
+    "Password": "100000.Qi4CH/kM0PxssMxrPR1C5w==.jVXaRKVSSVAMVKHDflvzfrXV7KLiAz/LEPL8KidsTyo=",
+    "Balance": 500,
+    "Games": [],
+    "HiddenGames": []
+  },
+  {
+    "Id": "user-001",
+    "AvatarPath": "Images/Avatars/DefaultAvatar.jpg",
+    "Login": "alice88",
+    "Name": "Alice",
+    "Email": "alice@example.com",
+    "Password": "100000.OjaeQpzAVWDhF6bo\u002BRLikg==.coGQ2Nm\u002BF5xFsTYRP6StERqzWhncc9wb2eTxLjblJh8=",
+    "Balance": 50.00,
+    "Games": [
+      "game-001",
+      "game-003"
+    ],
+    "HiddenGames": [
+      "game-006",
+      "game-009"
+    ]
+  },
+  {
+    "Id": "user-002",
+    "AvatarPath": "Images/Avatars/DefaultAvatar.jpg",
+    "Login": "bob_the_gamer",
+    "Name": "Bob",
+    "Email": "bob@example.com",
+    "Password": "100000.OjaeQpzAVWDhF6bo\u002BRLikg==.coGQ2Nm\u002BF5xFsTYRP6StERqzWhncc9wb2eTxLjblJh8=",
+    "Balance": 20.00,
+    "Games": [
+      "game-001",
+      "game-004",
+      "game-007",
+      "game-010"
+    ],
+    "HiddenGames": []
+  },
+  {
+    "Id": "user-003",
+    "AvatarPath": "Images/Avatars/DefaultAvatar.jpg",
+    "Login": "charlie",
+    "Name": "Charlie",
+    "Email": "charlie@example.com",
+    "Password": "100000.OjaeQpzAVWDhF6bo\u002BRLikg==.coGQ2Nm\u002BF5xFsTYRP6StERqzWhncc9wb2eTxLjblJh8=",
+    "Balance": 0.00,
+    "Games": [
+      "game-002",
+      "game-005",
+      "game-008"
+    ],
+    "HiddenGames": []
+  },
+  {
+    "Id": "91ea0882-b8af-4e0b-ba7b-9fc850fc082f",
+    "AvatarPath": "Images\\Avatars\\5a9ab09b-56db-4460-b369-cd4e644f2768.jpg",
+    "Login": "koichi",
+    "Name": "\u041A\u043E\u0438\u0442\u0438",
+    "Email": "koichi@jojo.dio",
+    "Password": "100000.kCpe3jH5I39OAD85ENNAFA==.17AnAFxjxjAEk5qviY\u002Bgx/ftch1S7TGyPITOtRxepWo=",
+    "Balance": 0,
+    "Games": [],
+    "HiddenGames": []
+  }
+]

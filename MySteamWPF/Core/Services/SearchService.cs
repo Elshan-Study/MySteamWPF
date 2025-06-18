@@ -1,4 +1,3 @@
-using MySteamWPF.Core.Data;
 using MySteamWPF.Core.Models;
 
 namespace MySteamWPF.Core.Services;
@@ -16,8 +15,8 @@ public static class SearchService
         if (string.IsNullOrWhiteSpace(namePart))
             return [];
 
-        if (Database.Games != null)
-            return Database.Games
+        if (DataManager.Games != null)
+            return DataManager.Games
                 .Where(g => g.Name.Contains(namePart, StringComparison.OrdinalIgnoreCase))
                 .ToList();
         return [];
@@ -31,8 +30,8 @@ public static class SearchService
         if (string.IsNullOrWhiteSpace(tag))
             return [];
 
-        if (Database.Games != null)
-            return Database.Games
+        if (DataManager.Games != null)
+            return DataManager.Games
                 .Where(g => g.Tags != null &&
                             g.Tags.Any(t => t.Equals(tag, StringComparison.OrdinalIgnoreCase)))
                 .ToList();
@@ -60,8 +59,8 @@ public static class SearchService
         if (string.IsNullOrWhiteSpace(namePart))
             return [];
 
-        if (Database.Games != null)
-            return Database.Games
+        if (DataManager.Games != null)
+            return DataManager.Games
                 .Where(g => user.Games.Contains(g.Name) &&
                             g.Name.Contains(namePart, StringComparison.OrdinalIgnoreCase))
                 .ToList();
@@ -76,8 +75,8 @@ public static class SearchService
         if (string.IsNullOrWhiteSpace(tag))
             return [];
 
-        if (Database.Games != null)
-            return Database.Games
+        if (DataManager.Games != null)
+            return DataManager.Games
                 .Where(g => user.Games.Contains(g.Name) &&
                             g.Tags != null &&
                             g.Tags.Any(t => t.Equals(tag, StringComparison.OrdinalIgnoreCase)))
