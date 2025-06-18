@@ -1,4 +1,3 @@
-using System;
 using System.Globalization;
 using System.IO;
 using System.Windows.Data;
@@ -24,6 +23,6 @@ public class ImagePathToBitmapConverter : IValueConverter
         return bitmap;
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => 
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => 
         throw new ConverterException("ImagePathToBitmapConverter.ConvertBack Error");
 }

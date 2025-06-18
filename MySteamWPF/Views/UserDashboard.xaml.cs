@@ -212,29 +212,34 @@ namespace MySteamWPF.Views
 
         private void OnChangePasswordClicked(object sender, RoutedEventArgs e)
         {
-            var oldPassword = Microsoft.VisualBasic.Interaction.InputBox("Введите старый пароль:", 
-                "Подтверждение");
+            var passwordWindow = new ChangePasswordWindow
+            {
+                Owner = Window.GetWindow(this)
+            };
+
+            passwordWindow.ShowDialog();
+
+            if (!passwordWindow.IsConfirmed)
+                return;
+
+            var oldPassword = passwordWindow.OldPassword;
+            var newPassword = passwordWindow.NewPassword;
 
             if (string.IsNullOrEmpty(oldPassword) || !PasswordHasher.Verify(oldPassword, _user.Password))
             {
-                MessageBox.Show("Неверный старый пароль.", "Ошибка", MessageBoxButton.OK, 
-                    MessageBoxImage.Error);
+                MessageBox.Show("Неверный старый пароль.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            var newPassword = Microsoft.VisualBasic.Interaction.InputBox("Введите новый пароль:", 
-                "Изменить пароль");
-
             if (!Validator.IsValidPassword(newPassword))
             {
-                MessageBox.Show("Пароль должен быть от 8 символов, содержать буквы и цифры.", 
-                    "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Пароль должен быть от 8 символов, содержать буквы и цифры.", "Ошибка",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             _user.Password = PasswordHasher.Hash(newPassword);
-            MessageBox.Show("Пароль успешно изменён.", "Успех", MessageBoxButton.OK, 
-                MessageBoxImage.Information);
+            MessageBox.Show("Пароль успешно изменён.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         
         private void OnGameClicked(object sender, MouseButtonEventArgs e)
