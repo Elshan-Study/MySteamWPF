@@ -9,8 +9,8 @@ public class Game
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public decimal Price { get; set; } = 0;
-    public List<string> Tags { get; set; } = new();
-    public List<string> Comments { get; set; } = new(); //id of comments
+    public List<string> Tags { get; set; } = [];
+    public List<string> Comments { get; set; } = []; //id of comments
     public Dictionary<string, int> Ratings { get; set; } = new();
     public string ImagePath { get; set; } = string.Empty;
 

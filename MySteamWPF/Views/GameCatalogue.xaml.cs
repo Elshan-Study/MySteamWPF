@@ -3,65 +3,90 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using MySteamWPF.Core.Models;
 using MySteamWPF.Core.Services;
+using MySteamWPF.Core.Utilities;
 
-namespace MySteamWPF.Views
+namespace MySteamWPF.Views;
+
+/// <summary>
+/// Interaction logic for GameCatalogue.xaml.
+/// Represents the main game catalogue page with search and selection capabilities.
+/// </summary>
+public partial class GameCatalogue : UserControl
 {
-    public partial class GameCatalogue : UserControl
+    private readonly List<Game> _allGames;
+    private List<Game> _filteredGames;
+
+    /// <summary>
+    /// Initializes the game catalogue and loads all games from the DataManager.
+    /// </summary>
+    public GameCatalogue()
     {
-        private List<Game> _allGames;
-        private List<Game> _filteredGames;
+        InitializeComponent();
 
-        public GameCatalogue()
+        _allGames = DataManager.Games ?? new List<Game>();
+        _filteredGames = _allGames;
+
+        GamesListBox.ItemsSource = _filteredGames;
+        Logger.Log($"Game catalogue loaded with {_allGames.Count} games. User: {AccountManager.CurrentUser}");
+    }
+
+    /// <summary>
+    /// Filters games by search query when search button is clicked.
+    /// </summary>
+    private void OnSearchClicked(object sender, RoutedEventArgs e)
+    {
+        var query = SearchTextBox.Text.Trim().ToLower();
+
+        _filteredGames = _allGames.Where(g =>
+            (!string.IsNullOrEmpty(g.Name) && g.Name.ToLower().Contains(query)) ||
+            (g.Tags.Any(t => t.Contains(query, StringComparison.CurrentCultureIgnoreCase)))
+        ).ToList();
+
+        GamesListBox.ItemsSource = _filteredGames;
+        Logger.Log($"Search performed with query: '{query}'. Found {_filteredGames.Count} games. User: {AccountManager.CurrentUser}");
+    }
+
+    /// <summary>
+    /// Resets the search field and displays all games.
+    /// </summary>
+    private void OnResetClicked(object sender, RoutedEventArgs e)
+    {
+        SearchTextBox.Text = string.Empty;
+        _filteredGames = _allGames;
+        GamesListBox.ItemsSource = _filteredGames;
+        Logger.Log($"Search reset. Showing all {_allGames.Count} games. User: {AccountManager.CurrentUser}");
+    }
+
+    /// <summary>
+    /// Updates visibility of the placeholder text inside the search box.
+    /// </summary>
+    private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        SearchPlaceholder.Visibility = string.IsNullOrWhiteSpace(SearchTextBox.Text)
+            ? Visibility.Visible
+            : Visibility.Collapsed;
+    }
+
+    /// <summary>
+    /// Triggers search when Enter key is pressed in the search box.
+    /// </summary>
+    private void SearchTextBox_KeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Enter)
         {
-            InitializeComponent();
-
-            _allGames = DataManager.Games ?? new List<Game>();
-            _filteredGames = _allGames;
-
-            GamesListBox.ItemsSource = _filteredGames;
-        }
-
-        private void OnSearchClicked(object sender, RoutedEventArgs e)
-        {
-            var query = SearchTextBox.Text.Trim().ToLower();
-
-            _filteredGames = _allGames.Where(g =>
-                (!string.IsNullOrEmpty(g.Name) && g.Name.ToLower().Contains(query)) ||
-                (g.Tags.Any(t => t.ToLower().Contains(query)))
-            ).ToList();
-
-            GamesListBox.ItemsSource = _filteredGames;
-        }
-
-        private void OnResetClicked(object sender, RoutedEventArgs e)
-        {
-            SearchTextBox.Text = string.Empty;
-            _filteredGames = _allGames;
-            GamesListBox.ItemsSource = _filteredGames;
-        }
-
-        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            SearchPlaceholder.Visibility = string.IsNullOrWhiteSpace(SearchTextBox.Text)
-                ? Visibility.Visible
-                : Visibility.Collapsed;
-        }
-
-        private void SearchTextBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                OnSearchClicked(sender, e);
-            }
-        }
-
-        private void OnGameClicked(object sender, MouseButtonEventArgs e)
-        {
-            if (sender is FrameworkElement element && element.DataContext is Game selectedGame)
-            {
-                GamePage.CurrentGame = selectedGame;
-                ((MainWindow)Application.Current.MainWindow).MainContentControl.Content = new GamePage();
-            }
+            OnSearchClicked(sender, e);
         }
     }
+
+    /// <summary>
+    /// Navigates to the selected game's page when clicked.
+    /// </summary>
+    private void OnGameClicked(object sender, MouseButtonEventArgs e)
+    {
+        if (sender is not FrameworkElement { DataContext: Game selectedGame }) return;
+        GamePage.CurrentGame = selectedGame;
+        ((MainWindow)Application.Current.MainWindow).MainContentControl.Content = new GamePage();
+        Logger.Log($"Navigated to game page: {selectedGame.Name}. User: {AccountManager.CurrentUser}");
+    }
 }
+

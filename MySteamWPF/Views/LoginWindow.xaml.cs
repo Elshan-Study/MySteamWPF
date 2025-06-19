@@ -1,9 +1,13 @@
 using System.Windows;
 using MySteamWPF.Core.Exceptions;
 using MySteamWPF.Core.Services;
+using MySteamWPF.Core.Utilities;
 
 namespace MySteamWPF.Views;
 
+/// <summary>
+/// Interaction logic for the login window where users can enter their email/login and password.
+/// </summary>
 public partial class LoginWindow
 {
     public LoginWindow()
@@ -11,6 +15,9 @@ public partial class LoginWindow
         InitializeComponent();
     }
 
+    /// <summary>
+    /// Handles the login button click event. Attempts to log the user in using email or login.
+    /// </summary>
     private void Login_Click(object sender, RoutedEventArgs e)
     {
         string id = IdentifierBox.Text.Trim();
@@ -39,10 +46,14 @@ public partial class LoginWindow
         }
         catch (Exception ex)
         {
+            Logger.LogException(ex, $"Login failed for input: {id}");
             MessageBox.Show("Ошибка входа: " + ex.Message);
         }
     }
 
+    /// <summary>
+    /// Handles the cancel button click event. Closes the window without logging in.
+    /// </summary>
     private void Cancel_Click(object sender, RoutedEventArgs e)
     {
         DialogResult = false;

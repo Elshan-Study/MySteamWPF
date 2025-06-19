@@ -55,11 +55,24 @@
 
         <!-- Панель поиска и переключения режима -->
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0 0 0 10">
-            <TextBox x:Name="SearchTextBox" Width="300" Height="30" Text="Поиск по названию или тегу" 
-                     Foreground="Gray" KeyDown="SearchTextBox_KeyDown"/>
+            <Grid Width="300" Height="30">
+                <TextBox x:Name="SearchTextBox"
+                         VerticalContentAlignment="Center"
+                         KeyDown="SearchTextBox_KeyDown"
+                         TextChanged="SearchTextBox_TextChanged"/>
+                <TextBlock x:Name="SearchPlaceholder"
+                           Text="Поиск по названию или тегу"
+                           Foreground="Gray"
+                           VerticalAlignment="Center"
+                           Margin="5,0,0,0"
+                           IsHitTestVisible="False"
+                           Visibility="Visible"/>
+            </Grid>
+
             <Button Content="Поиск" Width="100" Margin="10 0 0 0" Click="OnSearch"/>
             <Button Content="Показать скрытые / обычные игры" Margin="10 0 0 0" Click="OnToggleHiddenGames"/>
         </StackPanel>
+
 
         <!-- Список игр -->
         <ScrollViewer Grid.Row="2">

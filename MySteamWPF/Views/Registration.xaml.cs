@@ -5,6 +5,9 @@ using MySteamWPF.Core.Utilities;
 
 namespace MySteamWPF.Views;
 
+/// <summary>
+/// Interaction logic for the user registration window.
+/// </summary>
 public partial class RegisterWindow : Window
 {
     public RegisterWindow()
@@ -12,6 +15,10 @@ public partial class RegisterWindow : Window
         InitializeComponent();
     }
 
+    /// <summary>
+    /// Handles registration logic after the user clicks the register button.
+    /// Validates input and registers a new account.
+    /// </summary>
     private void Register_Click(object sender, RoutedEventArgs e)
     {
         var login = LoginBox.Text.Trim();
@@ -21,8 +28,7 @@ public partial class RegisterWindow : Window
 
         if (!Validator.IsValidLogin(login))
         {
-            MessageBox.Show("Логин должен содержать минимум 3 символа и только буквы, цифры, тире и " +
-                            "подчеркивания.");
+            MessageBox.Show("Логин должен содержать минимум 3 символа и только буквы, цифры, тире и подчеркивания.");
             return;
         }
 
@@ -53,14 +59,19 @@ public partial class RegisterWindow : Window
         }
         catch (UserExistsException ex)
         {
+            Logger.LogException(ex, $"Attempt to register existing user: {login}, {email}");
             MessageBox.Show("Ошибка: " + ex.Message);
         }
         catch (Exception ex)
         {
+            Logger.LogException(ex, $"Unexpected error during registration for: {login}, {email}");
             MessageBox.Show("Неизвестная ошибка: " + ex.Message);
         }
     }
 
+    /// <summary>
+    /// Cancels the registration and closes the window.
+    /// </summary>
     private void Cancel_Click(object sender, RoutedEventArgs e)
     {
         DialogResult = false;
