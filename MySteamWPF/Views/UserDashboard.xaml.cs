@@ -58,16 +58,18 @@ namespace MySteamWPF.Views
         {
             Tag = "ShowVisible";
             _showingHidden = false;
+            GamesList.ItemsSource = null;
             GamesList.ItemsSource = _visibleGames;
-            NoGamesTextBlock.Visibility = _visibleGames.Any() ? Visibility.Collapsed : Visibility.Visible;
+            NoGamesTextBlock.Visibility = _visibleGames.Count != 0 ? Visibility.Collapsed : Visibility.Visible;
         }
 
         private void ShowHiddenGames()
         {
             Tag = "ShowHidden";
             _showingHidden = true;
+            GamesList.ItemsSource = null;
             GamesList.ItemsSource = _hiddenGames;
-            NoGamesTextBlock.Visibility = _hiddenGames.Any() ? Visibility.Collapsed : Visibility.Visible;
+            NoGamesTextBlock.Visibility = _hiddenGames.Count != 0 ? Visibility.Collapsed : Visibility.Visible;
         }
 
         private void OnSearch(object sender, RoutedEventArgs e)
@@ -257,19 +259,24 @@ namespace MySteamWPF.Views
                 if (_showingHidden)
                 {
                     _user.HiddenGames.Remove(game.Id);
-                    _user.Games.Add(game.Id);
-                    _visibleGames = GetUserGames(_user.Games);
-                    _hiddenGames = GetUserGames(_user.HiddenGames);
-                    ShowHiddenGames();
+                    if (!_user.Games.Contains(game.Id))
+                        _user.Games.Add(game.Id);
                 }
                 else
                 {
                     _user.Games.Remove(game.Id);
-                    _user.HiddenGames.Add(game.Id);
-                    _visibleGames = GetUserGames(_user.Games);
-                    _hiddenGames = GetUserGames(_user.HiddenGames);
-                    ShowVisibleGames();
+                    if (!_user.HiddenGames.Contains(game.Id))
+                        _user.HiddenGames.Add(game.Id);
                 }
+                
+                _visibleGames = GetUserGames(_user.Games).ToList();
+                _hiddenGames = GetUserGames(_user.HiddenGames).ToList();
+                
+                GamesList.ItemsSource = null;
+                if (_showingHidden)
+                    ShowHiddenGames();
+                else
+                    ShowVisibleGames();
             }
         }
         
