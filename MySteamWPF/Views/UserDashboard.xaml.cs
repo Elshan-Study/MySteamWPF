@@ -62,16 +62,23 @@ public partial class UserDashboard : UserControl
 
         try
         {
-            var fullPath = Path.GetFullPath(_user.AvatarPath);
-            if (!string.IsNullOrEmpty(_user.AvatarPath) && File.Exists(fullPath))
-                AvatarPath.Source = new BitmapImage(new Uri(fullPath, UriKind.Absolute));
-            else
-                AvatarPath.Source = new BitmapImage(new Uri("Images/Avatars/DefaultAvatar.jpg", UriKind.Relative));
+            if (!string.IsNullOrEmpty(_user.AvatarPath))
+            {
+                var fullPath = PathHelper.ResolvePath(_user.AvatarPath);
+                if (File.Exists(fullPath))
+                {
+                    AvatarPath.Source = new BitmapImage(new Uri(fullPath, UriKind.Absolute));
+                    return;
+                }
+            }
+            
+            var defaultAvatarPath = PathHelper.ResolvePath("Images/Avatars/DefaultAvatar.jpg");
+            AvatarPath.Source = File.Exists(defaultAvatarPath) ? new BitmapImage(new Uri(defaultAvatarPath, UriKind.Absolute)) : null;
         }
         catch (Exception ex)
         {
             Logger.LogException(ex, $"Failed to load avatar for user {_user.Login}");
-            AvatarPath.Source = new BitmapImage(new Uri("Images/Avatars/DefaultAvatar.jpg", UriKind.Relative));
+            AvatarPath.Source = null;
         }
     }
 

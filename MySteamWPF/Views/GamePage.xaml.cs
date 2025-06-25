@@ -1,3 +1,4 @@
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -147,18 +148,18 @@ public partial class GamePage : UserControl
 
     private void HighlightStars(int upTo)
     {
-        for (int i = 0; i < RatingStars.Items.Count; i++)
+        for (var i = 0; i < RatingStars.Items.Count; i++)
             if (RatingStars.Items[i] is TextBlock star)
                 star.Foreground = i < upTo ? System.Windows.Media.Brushes.Gold : System.Windows.Media.Brushes.Gray;
     }
 
     private void ResetStars()
     {
-        int userRating = 0;
+        var userRating = 0;
         if (AccountManager.CurrentUser != null && CurrentGame != null)
             CurrentGame.Ratings.TryGetValue(AccountManager.CurrentUser.Id, out userRating);
 
-        for (int i = 0; i < RatingStars.Items.Count; i++)
+        for (var i = 0; i < RatingStars.Items.Count; i++)
             if (RatingStars.Items[i] is TextBlock star)
                 star.Foreground = i < userRating ? System.Windows.Media.Brushes.Gold : System.Windows.Media.Brushes.Gray;
     }
@@ -166,7 +167,7 @@ public partial class GamePage : UserControl
     /// <summary>
     /// Loads comments and displays them in the list.
     /// </summary>
-    private void LoadComments(Game game)
+      private void LoadComments(Game game)
     {
         try
         {
@@ -184,10 +185,23 @@ public partial class GamePage : UserControl
                 var author = DataManager.Users.FirstOrDefault(u => u.Id == comment.AuthorId);
                 var avatarPath = PathHelper.ResolvePath(author?.AvatarPath ?? string.Empty);
 
+                BitmapImage avatarImage;
+
+                if (File.Exists(avatarPath))
+                {
+                    avatarImage = new BitmapImage(new Uri(avatarPath));
+                }
+                else
+                {
+                    var defaultAvatarPath = PathHelper.ResolvePath("Images/Avatars/DefaultAvatar.jpg");
+                    avatarImage = new BitmapImage(new Uri(defaultAvatarPath));
+                    Logger.Log($"Avatar not found for user {author?.Login ?? "unknown"}, using default avatar.");
+                }
+
                 var horizontalPanel = new StackPanel { Orientation = Orientation.Horizontal };
                 horizontalPanel.Children.Add(new Image
                 {
-                    Source = new BitmapImage(new Uri(avatarPath)),
+                    Source = avatarImage,
                     Width = 50,
                     Height = 50,
                     Margin = new Thickness(5)
