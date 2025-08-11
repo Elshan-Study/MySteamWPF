@@ -99,8 +99,8 @@ namespace MySteamWPF.Migrations
                     b.Property<string>("GameId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("TagId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("TagId")
+                        .HasColumnType("int");
 
                     b.HasKey("GameId", "TagId");
 
@@ -111,8 +111,11 @@ namespace MySteamWPF.Migrations
 
             modelBuilder.Entity("MySteamWPF.Core.Models.Tag", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()

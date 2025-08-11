@@ -12,7 +12,7 @@ using MySteamWPF.Core.Data;
 namespace MySteamWPF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250811162603_InitialCreate")]
+    [Migration("20250811193551_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -30,20 +30,26 @@ namespace MySteamWPF.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("AuthorId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime>("DatePosted")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("GameId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Message")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("AuthorId");
+                    b.HasIndex("GameId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Comments");
                 });
@@ -52,10 +58,6 @@ namespace MySteamWPF.Migrations
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
-
-                    b.PrimitiveCollection<string>("Comments")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -100,12 +102,31 @@ namespace MySteamWPF.Migrations
                     b.Property<string>("GameId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Tag")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("TagId")
+                        .HasColumnType("int");
 
-                    b.HasKey("GameId", "Tag");
+                    b.HasKey("GameId", "TagId");
+
+                    b.HasIndex("TagId");
 
                     b.ToTable("GameTags");
+                });
+
+            modelBuilder.Entity("MySteamWPF.Core.Models.Tag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("MySteamWPF.Core.Models.User", b =>
@@ -152,27 +173,33 @@ namespace MySteamWPF.Migrations
                     b.Property<string>("GameId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("UserId1")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<bool>("IsHidden")
+                        .HasColumnType("bit");
 
                     b.HasKey("UserId", "GameId");
 
                     b.HasIndex("GameId");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("UserGames");
                 });
 
             modelBuilder.Entity("MySteamWPF.Core.Models.Comment", b =>
                 {
-                    b.HasOne("MySteamWPF.Core.Models.User", "Author")
-                        .WithMany()
-                        .HasForeignKey("AuthorId")
+                    b.HasOne("MySteamWPF.Core.Models.Game", "Game")
+                        .WithMany("Comments")
+                        .HasForeignKey("GameId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Author");
+                    b.HasOne("MySteamWPF.Core.Models.User", "User")
+                        .WithMany("Comments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Game");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("MySteamWPF.Core.Models.GameRating", b =>
@@ -197,12 +224,20 @@ namespace MySteamWPF.Migrations
             modelBuilder.Entity("MySteamWPF.Core.Models.GameTag", b =>
                 {
                     b.HasOne("MySteamWPF.Core.Models.Game", "Game")
-                        .WithMany("Tags")
+                        .WithMany("GameTags")
                         .HasForeignKey("GameId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("MySteamWPF.Core.Models.Tag", "Tag")
+                        .WithMany("GameTags")
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Game");
+
+                    b.Navigation("Tag");
                 });
 
             modelBuilder.Entity("MySteamWPF.Core.Models.UserGame", b =>
@@ -219,10 +254,6 @@ namespace MySteamWPF.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MySteamWPF.Core.Models.User", null)
-                        .WithMany("HiddenGames")
-                        .HasForeignKey("UserId1");
-
                     b.Navigation("Game");
 
                     b.Navigation("User");
@@ -230,14 +261,21 @@ namespace MySteamWPF.Migrations
 
             modelBuilder.Entity("MySteamWPF.Core.Models.Game", b =>
                 {
-                    b.Navigation("Ratings");
+                    b.Navigation("Comments");
 
-                    b.Navigation("Tags");
+                    b.Navigation("GameTags");
+
+                    b.Navigation("Ratings");
+                });
+
+            modelBuilder.Entity("MySteamWPF.Core.Models.Tag", b =>
+                {
+                    b.Navigation("GameTags");
                 });
 
             modelBuilder.Entity("MySteamWPF.Core.Models.User", b =>
                 {
-                    b.Navigation("HiddenGames");
+                    b.Navigation("Comments");
 
                     b.Navigation("Ratings");
 

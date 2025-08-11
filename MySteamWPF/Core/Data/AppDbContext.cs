@@ -21,11 +21,9 @@ public class AppDbContext : DbContext
         // Composite key for many-to-many tables
         modelBuilder.Entity<GameTag>().HasKey(gt => new { gt.GameId, gt.TagId });
         modelBuilder.Entity<UserGame>().HasKey(ug => new { ug.UserId, ug.GameId });
-
+        modelBuilder.Entity<GameRating>().HasKey(gr => new { gr.GameId, gr.UserId });
+        
         // Relationships
-        modelBuilder.Entity<GameRating>()
-            .HasKey(gr => new { gr.GameId, gr.UserId });
-
         modelBuilder.Entity<GameRating>()
             .HasOne(gr => gr.Game)
             .WithMany(g => g.Ratings)
@@ -55,9 +53,6 @@ public class AppDbContext : DbContext
             .HasOne(ug => ug.Game)
             .WithMany()
             .HasForeignKey(ug => ug.GameId);
-        
-        modelBuilder.Entity<UserGame>()
-            .HasKey(ug => new { ug.UserId, ug.GameId });
         
         modelBuilder.Entity<Comment>()
             .HasOne(c => c.Game)
