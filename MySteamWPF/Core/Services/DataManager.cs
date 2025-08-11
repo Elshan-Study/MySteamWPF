@@ -22,10 +22,11 @@ public static class DataManager
 
         return context.Users
             .Include(u => u.UserGames)
-                .ThenInclude(ug => ug.Game)
-                    .ThenInclude(g => g.GameTags)
+            .ThenInclude(ug => ug.Game)
+            .ThenInclude(g => g.GameTags)
             .Include(u => u.Ratings)
-                .ThenInclude(r => r.Game)
+            .ThenInclude(r => r.Game)
+            .Include(u => u.Comments) 
             .ToList();
     }
     
@@ -72,10 +73,9 @@ public static class DataManager
             .Include(g => g.GameTags)
             .Include(g => g.Ratings)
             .ThenInclude(r => r.User)
-            .Include(g => g.Comments) 
-            .ThenInclude(c => c.User) 
+            .Include(g => g.Comments)
+            .ThenInclude(c => c.User)
             .ToList();
-
     }
     
     public static List<Comment> LoadComments()
