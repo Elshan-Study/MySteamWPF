@@ -3,17 +3,17 @@ namespace MySteamWPF.Core.Models;
 /// <summary>
 /// Represents the platform user: id, login, name, email, password, balance and list of games.
 /// </summary>
-public class User(string id, string login, string name, string email, string password)
+public class User
 {
-    public string Id { get; init; } = id; 
-    
-    public string AvatarPath {get; set;} = "Images/Avatars/DefaultAvatar.jpg";
-    public string Login { get; set; } = login;
-    public string Name { get; set; } = name;
-    public string Email { get; set; } = email;
-    public string Password { get; set; } = password;
-
+    public string Id { get; set; } = Guid.NewGuid().ToString();
+    public string AvatarPath { get; set; } = "Images/Avatars/DefaultAvatar.jpg";
+    public string Login { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
+    public string Password { get; set; } = string.Empty;
     public decimal Balance { get; set; } = 0;
-    public List<string> Games { get; set; } = []; //id of game
-    public List<string> HiddenGames { get; set; } = [];//id of game
+    public bool IsGaben { get; set; } = false;
+
+    public List<UserGame> UserGames { get; set; } = new();
+    public List<UserGame> HiddenGames { get; set; } = new();
 }

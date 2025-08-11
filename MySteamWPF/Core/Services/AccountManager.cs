@@ -39,9 +39,7 @@ public static class AccountManager
             throw new UserExistsException("A user with this login or email already exists.");
 
         var hashedPassword = PasswordHasher.Hash(password);
-        var id = Guid.NewGuid().ToString();
-
-        var newUser = new User(id, login, name, email, hashedPassword);
+        var newUser = new User(login, name, email, hashedPassword);
         DataManager.Users.Add(newUser);
 
         Notify?.Invoke($"User {login} successfully registered.");
