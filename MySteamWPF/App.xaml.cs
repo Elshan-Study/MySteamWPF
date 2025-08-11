@@ -41,7 +41,9 @@ public partial class App : Application
     
     protected override void OnExit(ExitEventArgs e)
     {
-        DataManager.SaveAll();
+        using var scope = Services.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        context.SaveChanges();
         base.OnExit(e);
     }
     

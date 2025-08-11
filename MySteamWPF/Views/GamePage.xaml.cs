@@ -149,7 +149,6 @@ public partial class GamePage : UserControl
             }
 
             AverageRating.Text = $"{CurrentGame.AverageRating:F2}/5";
-            DataManager.SaveAll();
             LoadRatingStars();
 
             Logger.Log($"User {AccountManager.CurrentUser} rated game {CurrentGame.Name} with {rating} stars.");
@@ -368,7 +367,6 @@ public partial class GamePage : UserControl
 
             user.Balance -= CurrentGame.Price;
             user.UserGames.Add(new UserGame { GameId = CurrentGame.Id, UserId = user.Id });
-            DataManager.SaveAll();
 
             MessageBox.Show($"Вы купили {CurrentGame.Name}!");
             Logger.Log($"User {user} purchased game {CurrentGame.Name}");

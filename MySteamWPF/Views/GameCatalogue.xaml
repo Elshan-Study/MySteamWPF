@@ -29,7 +29,7 @@
                         <TextBlock Text="{Binding Description}" TextWrapping="Wrap" MaxHeight="40"/>
                         <TextBlock Text="{Binding AverageRating, StringFormat=Рейтинг: {0:F2}/5}" 
                                    Foreground="Goldenrod" Margin="0,5,0,0"/>
-                        <ItemsControl ItemsSource="{Binding Tags}">
+                        <ItemsControl ItemsSource="{Binding GameTags}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <StackPanel Orientation="Horizontal"/>
@@ -38,7 +38,7 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Border Background="LightGray" CornerRadius="3" Padding="2" Margin="2">
-                                        <TextBlock Text="{Binding}" FontSize="12"/>
+                                        <TextBlock Text="{Binding Tag.Name}" FontSize="12"/>
                                     </Border>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>

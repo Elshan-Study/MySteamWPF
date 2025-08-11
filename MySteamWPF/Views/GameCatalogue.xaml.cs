@@ -35,17 +35,25 @@ public partial class GameCatalogue : UserControl
     /// </summary>
     private void OnSearchClicked(object sender, RoutedEventArgs e)
     {
-        var query = SearchTextBox.Text.Trim();
+        try
+        {
+            var query = SearchTextBox.Text.Trim();
 
-        _filteredGames = _allGames.Where(g =>
-            (!string.IsNullOrEmpty(g.Name) &&
-             g.Name.IndexOf(query, StringComparison.CurrentCultureIgnoreCase) >= 0) ||
-            (g.GameTags.Any(t =>
-                t.Tag.Name.IndexOf(query, StringComparison.CurrentCultureIgnoreCase) >= 0))
-        ).ToList();
+            _filteredGames = _allGames.Where(g =>
+                (!string.IsNullOrEmpty(g.Name) &&
+                 g.Name.IndexOf(query, StringComparison.CurrentCultureIgnoreCase) >= 0) ||
+                (g.GameTags.Any(t =>
+                    t.Tag.Name.IndexOf(query, StringComparison.CurrentCultureIgnoreCase) >= 0))
+            ).ToList();
 
-        GamesListBox.ItemsSource = _filteredGames;
-        Logger.Log($"Search performed with query: '{query}'. Found {_filteredGames.Count} games. User: {AccountManager.CurrentUser}");
+            GamesListBox.ItemsSource = _filteredGames;
+            Logger.Log($"Search performed with query: '{query}'. Found {_filteredGames.Count} games. User: {AccountManager.CurrentUser}");
+        }
+        catch (Exception ex)
+        {
+            Logger.LogException(ex, "Error during search.");
+            MessageBox.Show("Ошибка при поиске игр.");
+        }
     }
 
     /// <summary>
@@ -85,10 +93,29 @@ public partial class GameCatalogue : UserControl
     /// </summary>
     private void OnGameClicked(object sender, MouseButtonEventArgs e)
     {
-        if (sender is not FrameworkElement { DataContext: Game selectedGame }) return;
-        GamePage.CurrentGame = selectedGame;
-        ((MainWindow)Application.Current.MainWindow).MainContentControl.Content = new GamePage();
-        Logger.Log($"Navigated to game page: {selectedGame.Name}. User: {AccountManager.CurrentUser}");
+        try
+        {
+            if (sender is not FrameworkElement { DataContext: Game selectedGame })
+            {
+                Logger.Log("Game click event triggered but DataContext is not Game.");
+                return;
+            }
+
+            if (selectedGame == null)
+            {
+                Logger.Log("Selected game is null.");
+                return;
+            }
+
+            GamePage.CurrentGame = selectedGame;
+            ((MainWindow)Application.Current.MainWindow).MainContentControl.Content = new GamePage();
+            Logger.Log($"Navigated to game page: {selectedGame.Name}. User: {AccountManager.CurrentUser}");
+        }
+        catch (Exception ex)
+        {
+            Logger.LogException(ex, "Error while navigating to game page.");
+            MessageBox.Show("Ошибка при открытии страницы игры.");
+        }
     }
 }
 

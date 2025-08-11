@@ -71,6 +71,7 @@ public static class DataManager
 
         return context.Games
             .Include(g => g.GameTags)
+            .ThenInclude(gt => gt.Tag)
             .Include(g => g.Ratings)
             .ThenInclude(r => r.User)
             .Include(g => g.Comments)
@@ -87,13 +88,6 @@ public static class DataManager
             .Include(c => c.User)
             .Include(c => c.Game)
             .ToList();
-    }
-    
-    public static void SaveAll()
-    {
-        using var scope = _serviceProvider.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        context.SaveChanges();
     }
     
     public static (List<User> Users, List<Game> Games, List<Comment> Comments) LoadAll()
