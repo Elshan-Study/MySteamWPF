@@ -24,8 +24,6 @@ public static class DataManager
             .Include(u => u.UserGames)
                 .ThenInclude(ug => ug.Game)
                     .ThenInclude(g => g.Tags)
-            .Include(u => u.HiddenGames)
-                .ThenInclude(ug => ug.Game)
             .Include(u => u.Ratings)
                 .ThenInclude(r => r.Game)
             .ToList();

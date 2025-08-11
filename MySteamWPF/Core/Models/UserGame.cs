@@ -7,4 +7,6 @@ public class UserGame
 
     public string GameId { get; set; } = null!;
     public Game Game { get; set; } = null!;
+    
+    public bool IsHidden { get; set; } = false;
 }

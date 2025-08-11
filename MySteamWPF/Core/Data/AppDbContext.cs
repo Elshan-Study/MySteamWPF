@@ -49,5 +49,8 @@ public class AppDbContext : DbContext
             .HasOne(ug => ug.Game)
             .WithMany()
             .HasForeignKey(ug => ug.GameId);
+        
+        modelBuilder.Entity<UserGame>()
+            .HasKey(ug => new { ug.UserId, ug.GameId });
     }
 }

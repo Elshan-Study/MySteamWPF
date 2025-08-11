@@ -27,8 +27,14 @@ public partial class UserDashboard : UserControl
         Tag = "ShowVisible";
 
         _user = AccountManager.CurrentUser!;
-        _visibleGames = GetUserGames(_user.UserGames);
-        _hiddenGames = GetUserGames(_user.HiddenGames);
+        _visibleGames = _user.UserGames
+            .Where(ug => !ug.IsHidden)
+            .Select(ug => ug.Game)
+            .ToList();
+        _hiddenGames = _user.UserGames
+            .Where(ug => ug.IsHidden)
+            .Select(ug => ug.Game)
+            .ToList();
 
         LoadUserInfo();
         ShowVisibleGames();
@@ -353,34 +359,57 @@ public partial class UserDashboard : UserControl
     private void OnHideUnhideClicked(object sender, RoutedEventArgs e)
     {
         if (sender is not Button { Tag: Game game }) return;
+        
+        var userGame = _user.UserGames.FirstOrDefault(ug => ug.GameId == game.Id);
 
         if (_showingHidden)
         {
-            var hiddenGame = _user.HiddenGames.FirstOrDefault(ug => ug.GameId == game.Id);
-            if (hiddenGame != null)
-                _user.HiddenGames.Remove(hiddenGame);
-
-            if (_user.UserGames.All(ug => ug.GameId != game.Id))
-                _user.UserGames.Add(new UserGame { UserId = _user.Id, GameId = game.Id });
-            DataManager.UpdateUser(_user);
-
+            if (userGame != null)
+            {
+                userGame.IsHidden = false;
+            }
+            else
+            {
+                _user.UserGames.Add(new UserGame
+                {
+                    UserId = _user.Id,
+                    GameId = game.Id,
+                    IsHidden = false
+                });
+            }
+            
             Logger.Log($"User {_user.Login} unhid game '{game.Name}'.");
         }
         else
         {
-            var visibleGame = _user.UserGames.FirstOrDefault(ug => ug.GameId == game.Id);
-            if (visibleGame != null)
-                _user.UserGames.Remove(visibleGame);
-
-            if (_user.HiddenGames.All(ug => ug.GameId != game.Id))
-                _user.HiddenGames.Add(new UserGame { UserId = _user.Id, GameId = game.Id });
-            DataManager.UpdateUser(_user);
+            if (userGame != null)
+            {
+                userGame.IsHidden = true;
+            }
+            else
+            {
+                _user.UserGames.Add(new UserGame
+                {
+                    UserId = _user.Id,
+                    GameId = game.Id,
+                    IsHidden = true
+                });
+            }
 
             Logger.Log($"User {_user.Login} hid game '{game.Name}'.");
         }
 
-        _visibleGames = GetUserGames(_user.UserGames).ToList();
-        _hiddenGames = GetUserGames(_user.HiddenGames).ToList();
+        DataManager.UpdateUser(_user);
+        
+        _visibleGames = _user.UserGames
+            .Where(ug => !ug.IsHidden)
+            .Select(ug => ug.Game)
+            .ToList();
+
+        _hiddenGames = _user.UserGames
+            .Where(ug => ug.IsHidden)
+            .Select(ug => ug.Game)
+            .ToList();
 
         GamesList.ItemsSource = null;
 

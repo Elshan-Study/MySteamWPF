@@ -15,6 +15,5 @@ public class User
     public bool IsGaben { get; set; } = false;
 
     public List<UserGame> UserGames { get; set; } = new();
-    public List<UserGame> HiddenGames { get; set; } = new();
     public ICollection<GameRating> Ratings { get; set; } = new List<GameRating>();
 }

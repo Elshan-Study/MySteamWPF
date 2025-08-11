@@ -46,8 +46,6 @@ public static class AccountManager
             Name = name,
             Email = email,
             Password = hashedPassword,
-            UserGames = new List<UserGame>(),
-            HiddenGames = new List<UserGame>()
         };
 
         DataManager.AddUser(newUser);
