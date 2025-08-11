@@ -97,12 +97,28 @@ namespace MySteamWPF.Migrations
                     b.Property<string>("GameId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Tag")
+                    b.Property<string>("TagId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("GameId", "Tag");
+                    b.HasKey("GameId", "TagId");
+
+                    b.HasIndex("TagId");
 
                     b.ToTable("GameTags");
+                });
+
+            modelBuilder.Entity("MySteamWPF.Core.Models.Tag", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("MySteamWPF.Core.Models.User", b =>
@@ -192,12 +208,20 @@ namespace MySteamWPF.Migrations
             modelBuilder.Entity("MySteamWPF.Core.Models.GameTag", b =>
                 {
                     b.HasOne("MySteamWPF.Core.Models.Game", "Game")
-                        .WithMany("Tags")
+                        .WithMany("GameTags")
                         .HasForeignKey("GameId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("MySteamWPF.Core.Models.Tag", "Tag")
+                        .WithMany("GameTags")
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Game");
+
+                    b.Navigation("Tag");
                 });
 
             modelBuilder.Entity("MySteamWPF.Core.Models.UserGame", b =>
@@ -221,9 +245,14 @@ namespace MySteamWPF.Migrations
 
             modelBuilder.Entity("MySteamWPF.Core.Models.Game", b =>
                 {
-                    b.Navigation("Ratings");
+                    b.Navigation("GameTags");
 
-                    b.Navigation("Tags");
+                    b.Navigation("Ratings");
+                });
+
+            modelBuilder.Entity("MySteamWPF.Core.Models.Tag", b =>
+                {
+                    b.Navigation("GameTags");
                 });
 
             modelBuilder.Entity("MySteamWPF.Core.Models.User", b =>

@@ -23,7 +23,7 @@ public static class DataManager
         return context.Users
             .Include(u => u.UserGames)
                 .ThenInclude(ug => ug.Game)
-                    .ThenInclude(g => g.Tags)
+                    .ThenInclude(g => g.GameTags)
             .Include(u => u.Ratings)
                 .ThenInclude(r => r.Game)
             .ToList();
@@ -69,7 +69,7 @@ public static class DataManager
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
         return context.Games
-            .Include(g => g.Tags)
+            .Include(g => g.GameTags)
             .Include(g => g.Ratings)
                 .ThenInclude(r => r.User)
             .ToList();

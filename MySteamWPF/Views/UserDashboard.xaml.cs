@@ -129,8 +129,8 @@ public partial class UserDashboard : UserControl
         var source = _showingHidden ? _hiddenGames : _visibleGames;
 
         var filtered = source
-            .Where(g => g.Name.Contains(query, StringComparison.CurrentCultureIgnoreCase) ||
-                        g.Tags.Any(t => t.Tag.Contains(query, StringComparison.CurrentCultureIgnoreCase)))
+            .Where(g => g.Name.ToLower().Contains(query) ||
+                        g.GameTags.Any(t => t.Tag.Name.ToLower().Contains(query)))
             .ToList();
 
         GamesList.ItemsSource = filtered;

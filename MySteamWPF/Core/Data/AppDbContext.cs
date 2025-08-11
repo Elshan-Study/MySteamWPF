@@ -8,6 +8,7 @@ public class AppDbContext : DbContext
     public DbSet<Game> Games { get; set; } = null!;
     public DbSet<User> Users { get; set; } = null!;
     public DbSet<Comment> Comments { get; set; } = null!;
+    public DbSet<Tag> Tags { get; set; } = null!;
     public DbSet<GameTag> GameTags { get; set; } = null!;
     public DbSet<UserGame> UserGames { get; set; } = null!;
 
@@ -18,7 +19,7 @@ public class AppDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // Composite key for many-to-many tables
-        modelBuilder.Entity<GameTag>().HasKey(gt => new { gt.GameId, gt.Tag });
+        modelBuilder.Entity<GameTag>().HasKey(gt => new { gt.GameId, gt.TagId });
         modelBuilder.Entity<UserGame>().HasKey(ug => new { ug.UserId, ug.GameId });
 
         // Relationships
@@ -34,11 +35,16 @@ public class AppDbContext : DbContext
             .HasOne(gr => gr.User)
             .WithMany(u => u.Ratings)
             .HasForeignKey(gr => gr.UserId);
-        
+
         modelBuilder.Entity<GameTag>()
             .HasOne(gt => gt.Game)
-            .WithMany(g => g.Tags)
+            .WithMany(g => g.GameTags)
             .HasForeignKey(gt => gt.GameId);
+
+        modelBuilder.Entity<GameTag>()
+            .HasOne(gt => gt.Tag)
+            .WithMany(t => t.GameTags)
+            .HasForeignKey(gt => gt.TagId);
 
         modelBuilder.Entity<UserGame>()
             .HasOne(ug => ug.User)

@@ -56,7 +56,7 @@ public partial class GamePage : UserControl
     private void LoadTags(Game game)
     {
         TagPanel.Children.Clear();
-        foreach (var tag in game.Tags)
+        foreach (var gameTag in game.GameTags)
         {
             TagPanel.Children.Add(new Border
             {
@@ -64,7 +64,7 @@ public partial class GamePage : UserControl
                 CornerRadius = new CornerRadius(3),
                 Padding = new Thickness(5),
                 Margin = new Thickness(3),
-                Child = new TextBlock { Text = tag.Tag, FontSize = 12 }
+                Child = new TextBlock { Text = gameTag.Tag.Name, FontSize = 12 }
             });
         }
     }

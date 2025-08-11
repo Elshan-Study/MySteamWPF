@@ -38,10 +38,10 @@ public partial class GameCatalogue : UserControl
         var query = SearchTextBox.Text.Trim();
 
         _filteredGames = _allGames.Where(g =>
-            (!string.IsNullOrEmpty(g.Name) && 
+            (!string.IsNullOrEmpty(g.Name) &&
              g.Name.IndexOf(query, StringComparison.CurrentCultureIgnoreCase) >= 0) ||
-            (g.Tags.Any(t => 
-                t.Tag.IndexOf(query, StringComparison.CurrentCultureIgnoreCase) >= 0))
+            (g.GameTags.Any(t =>
+                t.Tag.Name.IndexOf(query, StringComparison.CurrentCultureIgnoreCase) >= 0))
         ).ToList();
 
         GamesListBox.ItemsSource = _filteredGames;

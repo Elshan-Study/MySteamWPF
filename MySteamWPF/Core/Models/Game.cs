@@ -10,7 +10,7 @@ public class Game
     public string Description { get; set; } = string.Empty;
     public decimal Price { get; set; } = 0;
     
-    public List<GameTag> Tags { get; set; } = new();
+    public ICollection<GameTag> GameTags { get; set; } = new List<GameTag>();
     public List<string> Comments { get; set; } = new(); //id of comments
     public ICollection<GameRating> Ratings { get; set; } = new List<GameRating>();
     public string ImagePath { get; set; } = string.Empty;
