@@ -355,32 +355,29 @@ public partial class GamePage : UserControl
             }
 
             ((MainWindow)Application.Current.MainWindow).UpdateTopBar();
-
-            var user = AccountManager.CurrentUser;
-
-            if (user.UserGames.Any(ug => ug.GameId == CurrentGame.Id))
-            {
-                MessageBox.Show("Вы уже приобрели эту игру.");
-                return;
-            }
-
-            if (user.Balance < CurrentGame.Price)
-            {
-                MessageBox.Show("Недостаточно средств для покупки игры.");
-                return;
-            }
-
-            user.Balance -= CurrentGame.Price;
-            user.UserGames.Add(new UserGame { GameId = CurrentGame.Id, UserId = user.Id });
+            
+            DataManager.PurchaseGame(AccountManager.CurrentUser.Id, CurrentGame);
 
             MessageBox.Show($"Вы купили {CurrentGame.Name}!");
-            Logger.Log($"User {user} purchased game {CurrentGame.Name}");
+            Logger.Log($"User {AccountManager.CurrentUser.Login} purchased game {CurrentGame.Name}");
+            
+            var updatedUser = DataManager.LoadUsers()
+                .FirstOrDefault(u => u.Id == AccountManager.CurrentUser.Id);
+            if (updatedUser != null)
+                AccountManager.CurrentUser = updatedUser;
+
+        }
+        catch (InvalidOperationException ex)
+        {
+            MessageBox.Show(ex.Message);
         }
         catch (Exception ex)
         {
-            Logger.LogException(ex, $"Error purchasing {CurrentGame?.Name} by {AccountManager.CurrentUser}");
-            MessageBox.Show("Ошибка при покупке игры.");
+            Logger.LogException(ex, $"Error purchasing {CurrentGame?.Name} by {AccountManager.CurrentUser?.Login}");
+            MessageBox.Show("Ошибка при покупке игры: " + ex.Message);
         }
     }
+
+
 }
 

@@ -79,6 +79,31 @@ public static class DataManager
         context.GameRatings.Update(rating);
         context.SaveChanges();
     }
+    
+    public static void PurchaseGame(string userId, Game game)
+    {
+        using var scope = _serviceProvider.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        var user = context.Users
+            .Include(u => u.UserGames)
+            .FirstOrDefault(u => u.Id == userId);
+
+        if (user == null)
+            throw new InvalidOperationException("Пользователь не найден.");
+
+        if (user.UserGames.Any(ug => ug.GameId == game.Id))
+            throw new InvalidOperationException("Вы уже приобрели эту игру.");
+
+        if (user.Balance < game.Price)
+            throw new InvalidOperationException("Недостаточно средств для покупки игры.");
+
+        user.Balance -= game.Price;
+        user.UserGames.Add(new UserGame { GameId = game.Id, UserId = user.Id });
+
+        context.SaveChanges();
+    }
+
     public static List<Game> LoadGames()
     {
         using var scope = _serviceProvider.CreateScope();

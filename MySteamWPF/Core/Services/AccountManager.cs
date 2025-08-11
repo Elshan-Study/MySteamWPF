@@ -20,7 +20,7 @@ namespace MySteamWPF.Core.Services
         /// <summary>
         /// The currently logged-in user. Null if no user is logged in.
         /// </summary>
-        public static User? CurrentUser { get; private set; }
+        public static User? CurrentUser { get; set; }
 
         /// <summary>
         /// Registers a new user and adds them to the database.
