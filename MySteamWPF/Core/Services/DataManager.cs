@@ -24,9 +24,10 @@ public static class DataManager
             .Include(u => u.UserGames)
             .ThenInclude(ug => ug.Game)
             .ThenInclude(g => g.GameTags)
+            .ThenInclude(gt => gt.Tag)
             .Include(u => u.Ratings)
             .ThenInclude(r => r.Game)
-            .Include(u => u.Comments) 
+            .Include(u => u.Comments)
             .ToList();
     }
     
@@ -51,16 +52,21 @@ public static class DataManager
         using var scope = _serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-        context.Users.Update(user);
-        context.SaveChanges();
-    }
-    
-    public static void UpdateGame(Game game)
-    {
-        using var scope = _serviceProvider.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        var existingUser = context.Users
+            .Include(u => u.UserGames)
+            .ThenInclude(ug => ug.Game)
+            .FirstOrDefault(u => u.Id == user.Id);
 
-        context.Games.Update(game);
+        if (existingUser == null)
+            throw new InvalidOperationException("User not found");
+        
+        existingUser.Name = user.Name;
+        existingUser.Login = user.Login;
+        existingUser.Password = user.Password;
+        existingUser.AvatarPath = user.AvatarPath;
+        existingUser.Email = user.Email;
+        existingUser.Balance = user.Balance;
+
         context.SaveChanges();
     }
     
@@ -77,6 +83,23 @@ public static class DataManager
         using var scope = _serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         context.GameRatings.Update(rating);
+        context.SaveChanges();
+    }
+    
+    public static void UpdateUserGame(UserGame userGame)
+    {
+        using var scope = _serviceProvider.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        context.UserGames.Attach(userGame);
+        context.Entry(userGame).Property(ug => ug.IsHidden).IsModified = true;
+        context.SaveChanges();
+    }
+    
+    public static void AddUserGame(UserGame userGame)
+    {
+        using var scope = _serviceProvider.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        context.UserGames.Add(userGame);
         context.SaveChanges();
     }
     
@@ -128,14 +151,5 @@ public static class DataManager
             .Include(c => c.User)
             .Include(c => c.Game)
             .ToList();
-    }
-    
-    public static (List<User> Users, List<Game> Games, List<Comment> Comments) LoadAll()
-    {
-        return (
-            LoadUsers(),
-            LoadGames(),
-            LoadComments()
-        );
     }
 }

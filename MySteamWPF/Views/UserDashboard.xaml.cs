@@ -161,6 +161,7 @@ public partial class UserDashboard : UserControl
         _user.Balance += dialog.Amount;
         BalanceTextBlock.Text = $"{_user.Balance:C}";
         DataManager.UpdateUser(_user);
+        ReloadUser();
 
         Logger.Log($"User {_user.Login} topped up balance by {dialog.Amount:C}. New balance: {_user.Balance:C}");
     }
@@ -192,6 +193,7 @@ public partial class UserDashboard : UserControl
             AvatarPath.Source = new BitmapImage(new Uri(Path.GetFullPath(_user.AvatarPath), UriKind.Absolute));
 
             DataManager.UpdateUser(_user);
+            ReloadUser();
             Logger.Log($"User {_user.Login} changed avatar to {uniqueFileName}");
         }
         catch (Exception ex)
@@ -227,6 +229,7 @@ public partial class UserDashboard : UserControl
         MessageBox.Show("Имя успешно обновлено.", "Успех", MessageBoxButton.OK,
             MessageBoxImage.Information);
         DataManager.UpdateUser(_user);
+        ReloadUser();
 
         Logger.Log($"User {_user.Login} changed name to '{_user.Name}'");
     }
@@ -263,6 +266,7 @@ public partial class UserDashboard : UserControl
         MessageBox.Show("Логин успешно обновлён.", "Успех", MessageBoxButton.OK,
             MessageBoxImage.Information);
         DataManager.UpdateUser(_user);
+        ReloadUser();
 
         Logger.Log($"User changed login to '{_user.Login}'");
     }
@@ -299,6 +303,7 @@ public partial class UserDashboard : UserControl
         MessageBox.Show("Email успешно обновлён.", "Успех", MessageBoxButton.OK,
             MessageBoxImage.Information);
         DataManager.UpdateUser(_user);
+        ReloadUser();
 
         Logger.Log($"User {_user.Login} changed email to '{_user.Email}'");
     }
@@ -337,6 +342,7 @@ public partial class UserDashboard : UserControl
         _user.Password = PasswordHasher.Hash(newPassword);
         MessageBox.Show("Пароль успешно изменён.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
         DataManager.UpdateUser(_user);
+        ReloadUser();
 
         Logger.Log($"User {_user.Login} changed password.");
     }
@@ -359,7 +365,7 @@ public partial class UserDashboard : UserControl
     private void OnHideUnhideClicked(object sender, RoutedEventArgs e)
     {
         if (sender is not Button { Tag: Game game }) return;
-        
+
         var userGame = _user.UserGames.FirstOrDefault(ug => ug.GameId == game.Id);
 
         if (_showingHidden)
@@ -367,17 +373,20 @@ public partial class UserDashboard : UserControl
             if (userGame != null)
             {
                 userGame.IsHidden = false;
+                DataManager.UpdateUserGame(userGame);
             }
             else
             {
-                _user.UserGames.Add(new UserGame
+                var newUserGame = new UserGame
                 {
                     UserId = _user.Id,
                     GameId = game.Id,
                     IsHidden = false
-                });
+                };
+                DataManager.AddUserGame(newUserGame);
+                _user.UserGames.Add(newUserGame);
             }
-            
+
             Logger.Log($"User {_user.Login} unhid game '{game.Name}'.");
         }
         else
@@ -385,22 +394,23 @@ public partial class UserDashboard : UserControl
             if (userGame != null)
             {
                 userGame.IsHidden = true;
+                DataManager.UpdateUserGame(userGame);
             }
             else
             {
-                _user.UserGames.Add(new UserGame
+                var newUserGame = new UserGame
                 {
                     UserId = _user.Id,
                     GameId = game.Id,
                     IsHidden = true
-                });
+                };
+                DataManager.AddUserGame(newUserGame);
+                _user.UserGames.Add(newUserGame);
             }
 
             Logger.Log($"User {_user.Login} hid game '{game.Name}'.");
         }
 
-        DataManager.UpdateUser(_user);
-        
         _visibleGames = _user.UserGames
             .Where(ug => !ug.IsHidden)
             .Select(ug => ug.Game)
@@ -436,6 +446,20 @@ public partial class UserDashboard : UserControl
     {
         if (e.Key == Key.Enter)
             OnSearch(sender, e);
+    }
+    
+    private void ReloadUser()
+    {
+        var freshUser = DataManager.LoadUsers().FirstOrDefault(u => u.Id == _user.Id);
+        if (freshUser == null) return;
+        _user.Name = freshUser.Name;
+        _user.Login = freshUser.Login;
+        _user.Email = freshUser.Email;
+        _user.Balance = freshUser.Balance;
+        _user.AvatarPath = freshUser.AvatarPath;
+        _user.UserGames = freshUser.UserGames;
+        _user.Password = freshUser.Password;
+        LoadUserInfo();
     }
 }
 
