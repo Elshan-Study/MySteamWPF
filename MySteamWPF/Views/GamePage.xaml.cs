@@ -200,22 +200,21 @@ public partial class GamePage : UserControl
     /// <summary>
     /// Loads comments and displays them in the list.
     /// </summary>
-      private void LoadComments(Game game)
+    private void LoadComments(Game game)
     {
         try
         {
             var sorted = (_sortNewestFirst
-                ? game.Comments.Select(id => DataManager.LoadComments().FirstOrDefault(c => c.Id == id))
-                    .Where(c => c != null).OrderByDescending(c => c!.DatePosted)
-                : game.Comments.Select(id => DataManager.LoadComments().FirstOrDefault(c => c.Id == id))
-                    .Where(c => c != null).OrderBy(c => c!.DatePosted)).Cast<Comment>().ToList();
+                ? game.Comments.OrderByDescending(c => c.DatePosted)
+                : game.Comments.OrderBy(c => c.DatePosted))
+                .ToList();
 
             CommentList.Children.Clear();
             NoCommentsText.Visibility = sorted.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
 
             foreach (var comment in sorted)
             {
-                var author = DataManager.LoadUsers().FirstOrDefault(u => u.Id == comment.AuthorId);
+                var author = comment.User;
                 var avatarPath = PathHelper.ResolvePath(author?.AvatarPath ?? string.Empty);
 
                 BitmapImage avatarImage;
@@ -307,26 +306,33 @@ public partial class GamePage : UserControl
 
             ((MainWindow)Application.Current.MainWindow).UpdateTopBar();
 
-            var text = Microsoft.VisualBasic.Interaction.InputBox("Введите комментарий:", "Оставить комментарий").Trim();
-            if (string.IsNullOrWhiteSpace(text)) return;
+            var text = Microsoft.VisualBasic.Interaction.InputBox(
+                "Введите комментарий:", 
+                "Оставить комментарий"
+            ).Trim();
+
+            if (string.IsNullOrWhiteSpace(text))
+                return;
 
             var comment = new Comment
             {
-                AuthorId = AccountManager.CurrentUser.Id,
-                Message = text
+                UserId = AccountManager.CurrentUser.Id,
+                GameId = CurrentGame.Id, 
+                Message = text,
+                DatePosted = DateTime.UtcNow
             };
-            CurrentGame.Comments.Add(comment.Id);
+
+            CurrentGame.Comments.Add(comment);
             DataManager.UpdateGame(CurrentGame);
             DataManager.AddComment(comment);
 
             LoadComments(CurrentGame);
-            DataManager.SaveAll();
 
-            Logger.Log($"User {AccountManager.CurrentUser} commented on {CurrentGame.Name}: {text}");
+            Logger.Log($"User {AccountManager.CurrentUser.Login} commented on {CurrentGame.Name}: {text}");
         }
         catch (Exception ex)
         {
-            Logger.LogException(ex, $"Error adding comment by {AccountManager.CurrentUser} on {CurrentGame?.Name}");
+            Logger.LogException(ex, $"Error adding comment by {AccountManager.CurrentUser?.Login} on {CurrentGame?.Name}");
             MessageBox.Show("Ошибка при добавлении комментария.");
         }
     }

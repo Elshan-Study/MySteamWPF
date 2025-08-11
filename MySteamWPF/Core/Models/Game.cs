@@ -11,7 +11,8 @@ public class Game
     public decimal Price { get; set; } = 0;
     
     public ICollection<GameTag> GameTags { get; set; } = new List<GameTag>();
-    public List<string> Comments { get; set; } = new(); //id of comments
+    
+    public ICollection<Comment> Comments { get; set; } = new List<Comment>();
     public ICollection<GameRating> Ratings { get; set; } = new List<GameRating>();
     public string ImagePath { get; set; } = string.Empty;
 

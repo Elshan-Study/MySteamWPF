@@ -71,8 +71,11 @@ public static class DataManager
         return context.Games
             .Include(g => g.GameTags)
             .Include(g => g.Ratings)
-                .ThenInclude(r => r.User)
+            .ThenInclude(r => r.User)
+            .Include(g => g.Comments) 
+            .ThenInclude(c => c.User) 
             .ToList();
+
     }
     
     public static List<Comment> LoadComments()
@@ -81,7 +84,8 @@ public static class DataManager
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
         return context.Comments
-            .Include(c => c.Author)
+            .Include(c => c.User)
+            .Include(c => c.Game)
             .ToList();
     }
     

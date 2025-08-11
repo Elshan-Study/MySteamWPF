@@ -58,5 +58,15 @@ public class AppDbContext : DbContext
         
         modelBuilder.Entity<UserGame>()
             .HasKey(ug => new { ug.UserId, ug.GameId });
+        
+        modelBuilder.Entity<Comment>()
+            .HasOne(c => c.Game)
+            .WithMany(g => g.Comments)
+            .HasForeignKey(c => c.GameId);
+
+        modelBuilder.Entity<Comment>()
+            .HasOne(c => c.User)
+            .WithMany(u => u.Comments)
+            .HasForeignKey(c => c.UserId);
     }
 }

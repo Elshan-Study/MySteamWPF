@@ -6,8 +6,11 @@ namespace MySteamWPF.Core.Models;
 public class Comment
 {
     public string Id { get; set; } = Guid.NewGuid().ToString();
-    public string AuthorId { get; set; } = string.Empty;
-    public User? Author { get; set; }
+    
+    public string GameId { get; set; } = string.Empty;
+    public Game Game { get; set; } = null!;
+    public string UserId { get; set; } = string.Empty;
+    public User User { get; set; } = null!;
     public string Message { get; set; } = string.Empty;
     public DateTime DatePosted { get; set; } = DateTime.UtcNow;
 }
