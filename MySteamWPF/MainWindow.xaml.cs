@@ -22,6 +22,7 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         MainContentControl.Content = new GameCatalogue();
+        DataManager.SaveAll();
     }
     
     public void UpdateTopBar()

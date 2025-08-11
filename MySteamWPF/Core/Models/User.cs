@@ -16,5 +16,5 @@ public class User
 
     public List<UserGame> UserGames { get; set; } = new();
     public List<UserGame> HiddenGames { get; set; } = new();
-    public IEnumerable<GameRating>? Ratings { get; set; }
+    public ICollection<GameRating> Ratings { get; set; } = new List<GameRating>();
 }
