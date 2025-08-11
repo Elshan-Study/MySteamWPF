@@ -47,6 +47,24 @@ public static class DataManager
         context.SaveChanges();
     }
     
+    public static void UpdateUser(User user)
+    {
+        using var scope = _serviceProvider.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        context.Users.Update(user);
+        context.SaveChanges();
+    }
+    
+    public static void UpdateGame(Game game)
+    {
+        using var scope = _serviceProvider.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        context.Games.Update(game);
+        context.SaveChanges();
+    }
+    
     public static List<Game> LoadGames()
     {
         using var scope = _serviceProvider.CreateScope();

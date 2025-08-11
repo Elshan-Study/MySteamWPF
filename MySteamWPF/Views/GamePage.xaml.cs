@@ -144,6 +144,8 @@ public partial class GamePage : UserControl
                     GameId = CurrentGame.Id,
                     Rating = rating
                 });
+                
+                DataManager.UpdateGame(CurrentGame);
             }
 
             AverageRating.Text = $"{CurrentGame.AverageRating:F2}/5";
@@ -314,6 +316,7 @@ public partial class GamePage : UserControl
                 Message = text
             };
             CurrentGame.Comments.Add(comment.Id);
+            DataManager.UpdateGame(CurrentGame);
             DataManager.AddComment(comment);
 
             LoadComments(CurrentGame);

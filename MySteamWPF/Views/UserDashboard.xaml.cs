@@ -154,6 +154,7 @@ public partial class UserDashboard : UserControl
         if (dialog.ShowDialog() != true || dialog.Amount <= 0) return;
         _user.Balance += dialog.Amount;
         BalanceTextBlock.Text = $"{_user.Balance:C}";
+        DataManager.UpdateUser(_user);
 
         Logger.Log($"User {_user.Login} topped up balance by {dialog.Amount:C}. New balance: {_user.Balance:C}");
     }
@@ -184,6 +185,7 @@ public partial class UserDashboard : UserControl
             _user.AvatarPath = Path.Combine("Images", "Avatars", uniqueFileName);
             AvatarPath.Source = new BitmapImage(new Uri(Path.GetFullPath(_user.AvatarPath), UriKind.Absolute));
 
+            DataManager.UpdateUser(_user);
             Logger.Log($"User {_user.Login} changed avatar to {uniqueFileName}");
         }
         catch (Exception ex)
@@ -218,6 +220,7 @@ public partial class UserDashboard : UserControl
         NameTextBlock.Text = _user.Name;
         MessageBox.Show("Имя успешно обновлено.", "Успех", MessageBoxButton.OK,
             MessageBoxImage.Information);
+        DataManager.UpdateUser(_user);
 
         Logger.Log($"User {_user.Login} changed name to '{_user.Name}'");
     }
@@ -253,6 +256,7 @@ public partial class UserDashboard : UserControl
         LoginTextBlock.Text = _user.Login;
         MessageBox.Show("Логин успешно обновлён.", "Успех", MessageBoxButton.OK,
             MessageBoxImage.Information);
+        DataManager.UpdateUser(_user);
 
         Logger.Log($"User changed login to '{_user.Login}'");
     }
@@ -288,6 +292,7 @@ public partial class UserDashboard : UserControl
         EmailTextBlock.Text = _user.Email;
         MessageBox.Show("Email успешно обновлён.", "Успех", MessageBoxButton.OK,
             MessageBoxImage.Information);
+        DataManager.UpdateUser(_user);
 
         Logger.Log($"User {_user.Login} changed email to '{_user.Email}'");
     }
@@ -325,6 +330,7 @@ public partial class UserDashboard : UserControl
 
         _user.Password = PasswordHasher.Hash(newPassword);
         MessageBox.Show("Пароль успешно изменён.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+        DataManager.UpdateUser(_user);
 
         Logger.Log($"User {_user.Login} changed password.");
     }
@@ -356,6 +362,7 @@ public partial class UserDashboard : UserControl
 
             if (_user.UserGames.All(ug => ug.GameId != game.Id))
                 _user.UserGames.Add(new UserGame { UserId = _user.Id, GameId = game.Id });
+            DataManager.UpdateUser(_user);
 
             Logger.Log($"User {_user.Login} unhid game '{game.Name}'.");
         }
@@ -367,6 +374,7 @@ public partial class UserDashboard : UserControl
 
             if (_user.HiddenGames.All(ug => ug.GameId != game.Id))
                 _user.HiddenGames.Add(new UserGame { UserId = _user.Id, GameId = game.Id });
+            DataManager.UpdateUser(_user);
 
             Logger.Log($"User {_user.Login} hid game '{game.Name}'.");
         }
