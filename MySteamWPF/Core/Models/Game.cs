@@ -12,9 +12,11 @@ public class Game
     
     public List<GameTag> Tags { get; set; } = new();
     public List<string> Comments { get; set; } = new(); //id of comments
-    public Dictionary<string, int> Ratings { get; set; } = new();
+    public ICollection<GameRating> Ratings { get; set; } = new List<GameRating>();
     public string ImagePath { get; set; } = string.Empty;
 
     public double AverageRating =>
-        Ratings.Count == 0 ? 0 : Math.Round(Ratings.Values.Average(), 2);
+        !Ratings.Any()
+            ? 0
+            : Math.Round(Ratings.Average(r => r.Rating), 2);
 }

@@ -41,7 +41,7 @@ public partial class App : Application
 
     protected override void OnExit(ExitEventArgs e)
     {
-        DataManager.SaveAll();
+        //DataManager.SaveAll();
         base.OnExit(e);
     }
     

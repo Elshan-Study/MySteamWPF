@@ -64,7 +64,7 @@ public partial class GamePage : UserControl
                 CornerRadius = new CornerRadius(3),
                 Padding = new Thickness(5),
                 Margin = new Thickness(3),
-                Child = new TextBlock { Text = tag, FontSize = 12 }
+                Child = new TextBlock { Text = tag.Tag, FontSize = 12 }
             });
         }
     }
@@ -75,10 +75,15 @@ public partial class GamePage : UserControl
     private void LoadRatingStars()
     {
         RatingStars.Items.Clear();
+
         int userRating = 0;
 
         if (AccountManager.CurrentUser != null && CurrentGame != null)
-            CurrentGame.Ratings.TryGetValue(AccountManager.CurrentUser.Id, out userRating);
+        {
+            var ratingEntry = CurrentGame.Ratings.FirstOrDefault(r => r.UserId == AccountManager.CurrentUser.Id);
+            if (ratingEntry != null)
+                userRating = ratingEntry.Rating;
+        }
 
         for (int i = 1; i <= 5; i++)
         {
@@ -124,7 +129,23 @@ public partial class GamePage : UserControl
             if (sender is not TextBlock { Tag: int rating })
                 return;
 
-            CurrentGame.Ratings[AccountManager.CurrentUser.Id] = rating;
+            var userId = AccountManager.CurrentUser.Id;
+
+            var existingRating = CurrentGame.Ratings.FirstOrDefault(r => r.UserId == userId);
+            if (existingRating != null)
+            {
+                existingRating.Rating = rating;
+            }
+            else
+            {
+                CurrentGame.Ratings.Add(new GameRating
+                {
+                    UserId = userId,
+                    GameId = CurrentGame.Id,
+                    Rating = rating
+                });
+            }
+
             AverageRating.Text = $"{CurrentGame.AverageRating:F2}/5";
             DataManager.SaveAll();
             LoadRatingStars();
@@ -155,13 +176,23 @@ public partial class GamePage : UserControl
 
     private void ResetStars()
     {
-        var userRating = 0;
+        int userRating = 0;
         if (AccountManager.CurrentUser != null && CurrentGame != null)
-            CurrentGame.Ratings.TryGetValue(AccountManager.CurrentUser.Id, out userRating);
+        {
+            var ratingEntry = CurrentGame.Ratings.FirstOrDefault(r => r.UserId == AccountManager.CurrentUser.Id);
+            if (ratingEntry != null)
+                userRating = ratingEntry.Rating;
+        }
 
-        for (var i = 0; i < RatingStars.Items.Count; i++)
+        for (int i = 0; i < RatingStars.Items.Count; i++)
+        {
             if (RatingStars.Items[i] is TextBlock star)
-                star.Foreground = i < userRating ? System.Windows.Media.Brushes.Gold : System.Windows.Media.Brushes.Gray;
+            {
+                star.Foreground = (i < userRating) 
+                    ? System.Windows.Media.Brushes.Gold 
+                    : System.Windows.Media.Brushes.Gray;
+            }
+        }
     }
 
     /// <summary>
@@ -277,7 +308,11 @@ public partial class GamePage : UserControl
             var text = Microsoft.VisualBasic.Interaction.InputBox("Введите комментарий:", "Оставить комментарий").Trim();
             if (string.IsNullOrWhiteSpace(text)) return;
 
-            var comment = new Comment(AccountManager.CurrentUser.Id, text);
+            var comment = new Comment
+            {
+                AuthorId = AccountManager.CurrentUser.Id,
+                Message = text
+            };
             CurrentGame.Comments.Add(comment.Id);
             DataManager.Comments.Add(comment);
 
@@ -310,7 +345,7 @@ public partial class GamePage : UserControl
 
             var user = AccountManager.CurrentUser;
 
-            if (user.Games.Contains(CurrentGame.Id))
+            if (user.UserGames.Any(ug => ug.GameId == CurrentGame.Id))
             {
                 MessageBox.Show("Вы уже приобрели эту игру.");
                 return;
@@ -323,7 +358,7 @@ public partial class GamePage : UserControl
             }
 
             user.Balance -= CurrentGame.Price;
-            user.Games.Add(CurrentGame.Id);
+            user.UserGames.Add(new UserGame { GameId = CurrentGame.Id, UserId = user.Id });
             DataManager.SaveAll();
 
             MessageBox.Show($"Вы купили {CurrentGame.Name}!");

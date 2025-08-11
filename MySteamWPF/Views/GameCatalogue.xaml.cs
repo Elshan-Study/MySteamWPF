@@ -35,11 +35,13 @@ public partial class GameCatalogue : UserControl
     /// </summary>
     private void OnSearchClicked(object sender, RoutedEventArgs e)
     {
-        var query = SearchTextBox.Text.Trim().ToLower();
+        var query = SearchTextBox.Text.Trim();
 
         _filteredGames = _allGames.Where(g =>
-            (!string.IsNullOrEmpty(g.Name) && g.Name.ToLower().Contains(query)) ||
-            (g.Tags.Any(t => t.Contains(query, StringComparison.CurrentCultureIgnoreCase)))
+            (!string.IsNullOrEmpty(g.Name) && 
+             g.Name.IndexOf(query, StringComparison.CurrentCultureIgnoreCase) >= 0) ||
+            (g.Tags.Any(t => 
+                t.Tag.IndexOf(query, StringComparison.CurrentCultureIgnoreCase) >= 0))
         ).ToList();
 
         GamesListBox.ItemsSource = _filteredGames;

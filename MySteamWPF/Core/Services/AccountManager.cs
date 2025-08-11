@@ -39,12 +39,23 @@ public static class AccountManager
             throw new UserExistsException("A user with this login or email already exists.");
 
         var hashedPassword = PasswordHasher.Hash(password);
-        var newUser = new User(login, name, email, hashedPassword);
+
+        var newUser = new User
+        {
+            Login = login,
+            Name = name,
+            Email = email,
+            Password = hashedPassword,
+            UserGames = new List<UserGame>(),
+            HiddenGames = new List<UserGame>()
+        };
+
         DataManager.Users.Add(newUser);
 
         Notify?.Invoke($"User {login} successfully registered.");
         Logger.Log($"User {login} created");
     }
+
 
     /// <summary>
     /// Attempts to log in a user by email and password.

@@ -27,7 +27,7 @@ public partial class UserDashboard : UserControl
         Tag = "ShowVisible";
 
         _user = AccountManager.CurrentUser!;
-        _visibleGames = GetUserGames(_user.Games);
+        _visibleGames = GetUserGames(_user.UserGames);
         _hiddenGames = GetUserGames(_user.HiddenGames);
 
         LoadUserInfo();
@@ -39,15 +39,19 @@ public partial class UserDashboard : UserControl
     /// <summary>
     /// Retrieves the list of Game objects matching the given game IDs.
     /// </summary>
-    private List<Game> GetUserGames(List<string> gameIds)
+    private List<Game> GetUserGames(List<UserGame> userGames)
     {
-        if (DataManager.Games != null)
-            return DataManager.Games
-                .Where(g => gameIds.Contains(g.Id))
-                .ToList();
+        if (DataManager.Games == null)
+        {
+            Logger.Log($"DataManager.Games is null when retrieving user games for user {_user.Login}", "Warning");
+            return new List<Game>();
+        }
 
-        Logger.Log($"DataManager.Games is null when retrieving user games for user {_user.Login}", "Warning");
-        return [];
+        var gameIds = userGames.Select(ug => ug.GameId).ToList();
+
+        return DataManager.Games
+            .Where(g => gameIds.Contains(g.Id))
+            .ToList();
     }
 
     /// <summary>
@@ -120,7 +124,7 @@ public partial class UserDashboard : UserControl
 
         var filtered = source
             .Where(g => g.Name.Contains(query, StringComparison.CurrentCultureIgnoreCase) ||
-                        g.Tags.Any(t => t.Contains(query, StringComparison.CurrentCultureIgnoreCase)))
+                        g.Tags.Any(t => t.Tag.Contains(query, StringComparison.CurrentCultureIgnoreCase)))
             .ToList();
 
         GamesList.ItemsSource = filtered;
@@ -343,24 +347,31 @@ public partial class UserDashboard : UserControl
     private void OnHideUnhideClicked(object sender, RoutedEventArgs e)
     {
         if (sender is not Button { Tag: Game game }) return;
+
         if (_showingHidden)
         {
-            _user.HiddenGames.Remove(game.Id);
-            if (!_user.Games.Contains(game.Id))
-                _user.Games.Add(game.Id);
+            var hiddenGame = _user.HiddenGames.FirstOrDefault(ug => ug.GameId == game.Id);
+            if (hiddenGame != null)
+                _user.HiddenGames.Remove(hiddenGame);
+
+            if (_user.UserGames.All(ug => ug.GameId != game.Id))
+                _user.UserGames.Add(new UserGame { UserId = _user.Id, GameId = game.Id });
 
             Logger.Log($"User {_user.Login} unhid game '{game.Name}'.");
         }
         else
         {
-            _user.Games.Remove(game.Id);
-            if (!_user.HiddenGames.Contains(game.Id))
-                _user.HiddenGames.Add(game.Id);
+            var visibleGame = _user.UserGames.FirstOrDefault(ug => ug.GameId == game.Id);
+            if (visibleGame != null)
+                _user.UserGames.Remove(visibleGame);
+
+            if (_user.HiddenGames.All(ug => ug.GameId != game.Id))
+                _user.HiddenGames.Add(new UserGame { UserId = _user.Id, GameId = game.Id });
 
             Logger.Log($"User {_user.Login} hid game '{game.Name}'.");
         }
 
-        _visibleGames = GetUserGames(_user.Games).ToList();
+        _visibleGames = GetUserGames(_user.UserGames).ToList();
         _hiddenGames = GetUserGames(_user.HiddenGames).ToList();
 
         GamesList.ItemsSource = null;

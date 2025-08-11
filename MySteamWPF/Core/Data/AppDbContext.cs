@@ -22,6 +22,19 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<UserGame>().HasKey(ug => new { ug.UserId, ug.GameId });
 
         // Relationships
+        modelBuilder.Entity<GameRating>()
+            .HasKey(gr => new { gr.GameId, gr.UserId });
+
+        modelBuilder.Entity<GameRating>()
+            .HasOne(gr => gr.Game)
+            .WithMany(g => g.Ratings)
+            .HasForeignKey(gr => gr.GameId);
+
+        modelBuilder.Entity<GameRating>()
+            .HasOne(gr => gr.User)
+            .WithMany(u => u.Ratings)
+            .HasForeignKey(gr => gr.UserId);
+        
         modelBuilder.Entity<GameTag>()
             .HasOne(gt => gt.Game)
             .WithMany(g => g.Tags)
