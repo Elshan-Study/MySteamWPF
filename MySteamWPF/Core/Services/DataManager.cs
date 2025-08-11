@@ -64,6 +64,21 @@ public static class DataManager
         context.SaveChanges();
     }
     
+    public static void AddRating(GameRating rating)
+    {
+        using var scope = _serviceProvider.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        context.GameRatings.Add(rating);
+        context.SaveChanges();
+    }
+
+    public static void UpdateRating(GameRating rating)
+    {
+        using var scope = _serviceProvider.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        context.GameRatings.Update(rating);
+        context.SaveChanges();
+    }
     public static List<Game> LoadGames()
     {
         using var scope = _serviceProvider.CreateScope();

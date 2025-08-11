@@ -135,17 +135,21 @@ public partial class GamePage : UserControl
             if (existingRating != null)
             {
                 existingRating.Rating = rating;
+                DataManager.UpdateRating(existingRating);
             }
             else
             {
-                CurrentGame.Ratings.Add(new GameRating
-                {
-                    UserId = userId,
-                    GameId = CurrentGame.Id,
-                    Rating = rating
-                });
-                
-                DataManager.UpdateGame(CurrentGame);
+                var newRating = new GameRating { UserId = userId, GameId = CurrentGame.Id, Rating = rating };
+                DataManager.AddRating(newRating);
+                CurrentGame.Ratings.Add(newRating);
+            }
+
+            var updatedGame = DataManager.LoadGames()
+                .FirstOrDefault(g => g.Id == CurrentGame.Id);
+
+            if (updatedGame != null)
+            {
+                CurrentGame.Ratings = updatedGame.Ratings;
             }
 
             AverageRating.Text = $"{CurrentGame.AverageRating:F2}/5";
@@ -321,9 +325,10 @@ public partial class GamePage : UserControl
                 DatePosted = DateTime.UtcNow
             };
 
-            CurrentGame.Comments.Add(comment);
-            DataManager.UpdateGame(CurrentGame);
             DataManager.AddComment(comment);
+
+            CurrentGame.Comments = DataManager.LoadGames()
+                .FirstOrDefault(g => g.Id == CurrentGame.Id)?.Comments ?? new List<Comment>();
 
             LoadComments(CurrentGame);
 

@@ -91,7 +91,7 @@ namespace MySteamWPF.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("GameRating");
+                    b.ToTable("GameRatings");
                 });
 
             modelBuilder.Entity("MySteamWPF.Core.Models.GameTag", b =>
