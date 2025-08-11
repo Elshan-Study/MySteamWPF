@@ -41,7 +41,7 @@ public partial class UserDashboard : UserControl
     /// </summary>
     private List<Game> GetUserGames(List<UserGame> userGames)
     {
-        if (DataManager.Games == null)
+        if (DataManager.LoadGames() == null)
         {
             Logger.Log($"DataManager.Games is null when retrieving user games for user {_user.Login}", "Warning");
             return new List<Game>();
@@ -49,7 +49,7 @@ public partial class UserDashboard : UserControl
 
         var gameIds = userGames.Select(ug => ug.GameId).ToList();
 
-        return DataManager.Games
+        return DataManager.LoadGames() 
             .Where(g => gameIds.Contains(g.Id))
             .ToList();
     }
@@ -242,7 +242,7 @@ public partial class UserDashboard : UserControl
             return;
         }
 
-        if (DataManager.Users.Any(u => u.Login.Equals(input, StringComparison.OrdinalIgnoreCase)))
+        if (DataManager.LoadUsers().Any(u => u.Login.Equals(input, StringComparison.OrdinalIgnoreCase)))
         {
             MessageBox.Show("Этот логин уже используется.", "Ошибка", MessageBoxButton.OK,
                 MessageBoxImage.Error);
@@ -277,7 +277,7 @@ public partial class UserDashboard : UserControl
             return;
         }
 
-        if (DataManager.Users.Any(u => u.Email.Equals(input, StringComparison.OrdinalIgnoreCase)))
+        if (DataManager.LoadUsers().Any(u => u.Email.Equals(input, StringComparison.OrdinalIgnoreCase)))
         {
             MessageBox.Show("Этот email уже используется.", "Ошибка", MessageBoxButton.OK,
                 MessageBoxImage.Error);

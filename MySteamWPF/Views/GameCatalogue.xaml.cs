@@ -23,7 +23,7 @@ public partial class GameCatalogue : UserControl
     {
         InitializeComponent();
 
-        _allGames = DataManager.Games ?? new List<Game>();
+        _allGames = DataManager.LoadGames() ?? new List<Game>();
         _filteredGames = _allGames;
 
         GamesListBox.ItemsSource = _filteredGames;

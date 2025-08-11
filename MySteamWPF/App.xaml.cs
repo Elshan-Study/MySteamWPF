@@ -29,19 +29,19 @@ public partial class App : Application
         var services = new ServiceCollection();
         ConfigureServices(services);
         Services = services.BuildServiceProvider();
-        
+    
         base.OnStartup(e);
-        
+    
         using var scope = Services.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         context.Database.Migrate();
-        
-        //DataManager.LoadAll();
-    }
 
+        DataManager.Initialize(Services);
+    }
+    
     protected override void OnExit(ExitEventArgs e)
     {
-        //DataManager.SaveAll();
+        DataManager.SaveAll();
         base.OnExit(e);
     }
     

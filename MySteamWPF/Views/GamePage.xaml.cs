@@ -203,9 +203,9 @@ public partial class GamePage : UserControl
         try
         {
             var sorted = (_sortNewestFirst
-                ? game.Comments.Select(id => DataManager.Comments.FirstOrDefault(c => c.Id == id))
+                ? game.Comments.Select(id => DataManager.LoadComments().FirstOrDefault(c => c.Id == id))
                     .Where(c => c != null).OrderByDescending(c => c!.DatePosted)
-                : game.Comments.Select(id => DataManager.Comments.FirstOrDefault(c => c.Id == id))
+                : game.Comments.Select(id => DataManager.LoadComments().FirstOrDefault(c => c.Id == id))
                     .Where(c => c != null).OrderBy(c => c!.DatePosted)).Cast<Comment>().ToList();
 
             CommentList.Children.Clear();
@@ -213,7 +213,7 @@ public partial class GamePage : UserControl
 
             foreach (var comment in sorted)
             {
-                var author = DataManager.Users.FirstOrDefault(u => u.Id == comment.AuthorId);
+                var author = DataManager.LoadUsers().FirstOrDefault(u => u.Id == comment.AuthorId);
                 var avatarPath = PathHelper.ResolvePath(author?.AvatarPath ?? string.Empty);
 
                 BitmapImage avatarImage;
@@ -314,7 +314,7 @@ public partial class GamePage : UserControl
                 Message = text
             };
             CurrentGame.Comments.Add(comment.Id);
-            DataManager.Comments.Add(comment);
+            DataManager.AddComment(comment);
 
             LoadComments(CurrentGame);
             DataManager.SaveAll();

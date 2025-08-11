@@ -20,10 +20,8 @@ public partial class MainWindow : Window
 {
     public MainWindow()
     {
-        DataManager.LoadAll();
         InitializeComponent();
         MainContentControl.Content = new GameCatalogue();
-        DataManager.SaveAll();
     }
     
     public void UpdateTopBar()

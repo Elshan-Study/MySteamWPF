@@ -35,7 +35,7 @@ public static class AccountManager
             string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
             throw new ArgumentException("All fields must be filled.");
 
-        if (DataManager.Users.Any(u => u.Login == login || u.Email == email))
+        if (DataManager.LoadUsers().Any(u => u.Login == login || u.Email == email))
             throw new UserExistsException("A user with this login or email already exists.");
 
         var hashedPassword = PasswordHasher.Hash(password);
@@ -50,7 +50,7 @@ public static class AccountManager
             HiddenGames = new List<UserGame>()
         };
 
-        DataManager.Users.Add(newUser);
+        DataManager.AddUser(newUser);
 
         Notify?.Invoke($"User {login} successfully registered.");
         Logger.Log($"User {login} created");
@@ -70,7 +70,7 @@ public static class AccountManager
         if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
             throw new ArgumentException("Email and password are required.");
 
-        var user = DataManager.Users.FirstOrDefault(u => u.Email == email)
+        var user = DataManager.LoadUsers().FirstOrDefault(u => u.Email == email)
                    ?? throw new UserSearchException("User not found.");
         
         if (!PasswordHasher.Verify(password, user.Password))
@@ -93,7 +93,7 @@ public static class AccountManager
         if (string.IsNullOrWhiteSpace(login) || string.IsNullOrWhiteSpace(password))
             throw new ArgumentException("Login and password are required.");
 
-        var user = DataManager.Users.FirstOrDefault(u => u.Login == login)
+        var user = DataManager.LoadUsers().FirstOrDefault(u => u.Login == login)
                    ?? throw new UserSearchException("User not found.");
         
         if (!PasswordHasher.Verify(password, user.Password))
