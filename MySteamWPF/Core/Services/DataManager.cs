@@ -186,4 +186,44 @@ public static class DataManager
             .Include(c => c.Game)
             .ToList();
     }
+
+    public static void AddGame(Game game, List<Tag> tags)
+    {
+        using var scope = _serviceProvider.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        context.Games.Add(game);
+        context.SaveChanges();
+
+        foreach (var tag in tags)
+        {
+            var dbTag = context.Tags.FirstOrDefault(t => t.Name == tag.Name);
+            if (dbTag == null)
+            {
+                dbTag = new Tag { Name = tag.Name };
+                context.Tags.Add(dbTag);
+                context.SaveChanges();
+            }
+
+            if (context.GameTags.Any(gt => gt.GameId == game.Id && gt.TagId == dbTag.Id)) continue;
+            var gameTag = new GameTag
+            {
+                GameId = game.Id,
+                TagId = dbTag.Id
+            };
+            context.GameTags.Add(gameTag);
+        }
+
+        context.SaveChanges();
+    }
+
+    public static List<Tag> LoadTags()
+    {
+        using var scope = _serviceProvider.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        return context.Tags
+            .Include(t => t.GameTags)
+            .ToList();
+    }
 }

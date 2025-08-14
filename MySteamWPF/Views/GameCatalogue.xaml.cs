@@ -30,7 +30,7 @@ public partial class GameCatalogue : UserControl
 
         GamesListBox.ItemsSource = _filteredGames;
         
-        Dispatcher.BeginInvoke(new Action(UpdateDeleteButtonsVisibility), DispatcherPriority.Loaded);
+        Dispatcher.BeginInvoke(new Action(UpdateButtonsVisibility), DispatcherPriority.Loaded);
         
         Logger.Log($"Game catalogue loaded with {_allGames.Count} games. User: {AccountManager.CurrentUser}");
     }
@@ -52,7 +52,7 @@ public partial class GameCatalogue : UserControl
             ).ToList();
 
             GamesListBox.ItemsSource = _filteredGames;
-            Dispatcher.BeginInvoke(new Action(UpdateDeleteButtonsVisibility), DispatcherPriority.Loaded);
+            Dispatcher.BeginInvoke(new Action(UpdateButtonsVisibility), DispatcherPriority.Loaded);
             Logger.Log($"Search performed with query: '{query}'. Found {_filteredGames.Count} games. User: {AccountManager.CurrentUser}");
         }
         catch (Exception ex)
@@ -70,7 +70,7 @@ public partial class GameCatalogue : UserControl
         SearchTextBox.Text = string.Empty;
         _filteredGames = _allGames;
         GamesListBox.ItemsSource = _filteredGames;
-        Dispatcher.BeginInvoke(new Action(UpdateDeleteButtonsVisibility), DispatcherPriority.Loaded);
+        Dispatcher.BeginInvoke(new Action(UpdateButtonsVisibility), DispatcherPriority.Loaded);
         Logger.Log($"Search reset. Showing all {_allGames.Count} games. User: {AccountManager.CurrentUser}");
     }
 
@@ -151,7 +151,7 @@ public partial class GameCatalogue : UserControl
                 AccountManager.CurrentUser?.UserGames?.Remove(userGame);
             }
 
-            Dispatcher.BeginInvoke(new Action(UpdateDeleteButtonsVisibility), DispatcherPriority.Loaded);
+            Dispatcher.BeginInvoke(new Action(UpdateButtonsVisibility), DispatcherPriority.Loaded);
         }
         catch (Exception ex)
         {
@@ -160,7 +160,7 @@ public partial class GameCatalogue : UserControl
         }
     }
     
-    private void UpdateDeleteButtonsVisibility()
+    private void UpdateButtonsVisibility()
     {
         foreach (var item in GamesListBox.Items)
         {
@@ -174,6 +174,10 @@ public partial class GameCatalogue : UserControl
                     : Visibility.Collapsed;
             }
         }
+        
+        AddGameButton.Visibility = AccountManager.CurrentUser?.IsGaben == true
+            ? Visibility.Visible
+            : Visibility.Collapsed;
     }
 
     private Button? FindDeleteButton(DependencyObject parent)
@@ -191,5 +195,20 @@ public partial class GameCatalogue : UserControl
         }
         return null;
     }
+    
+    private void OnAddGameClicked(object sender, RoutedEventArgs e)
+    {
+        var addGameWindow = new AddGameWindow();
+        if (addGameWindow.ShowDialog() != true) return;
+        var newGame = addGameWindow.CreatedGame;
+        if (newGame == null) return;
+        _allGames.Add(newGame);
+        _filteredGames.Add(newGame);
+        GamesListBox.ItemsSource = null;
+        GamesListBox.ItemsSource = _filteredGames;
+        Dispatcher.BeginInvoke(new Action(UpdateButtonsVisibility), DispatcherPriority.Loaded);
+        Logger.Log($"New game '{newGame.Name}' added by {AccountManager.CurrentUser?.Login}");
+    }
+
 
 }

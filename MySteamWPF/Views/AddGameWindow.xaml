@@ -1,0 +1,75 @@
+<Window x:Class="MySteamWPF.Views.AddGameWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Добавить игру" Height="650" Width="650"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <Grid Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Название -->
+            <StackPanel Grid.Row="0" Margin="0,0,0,10">
+                <TextBlock Text="Название:"/>
+                <TextBox x:Name="NameTextBox" />
+            </StackPanel>
+
+            <!-- Цена -->
+            <StackPanel Grid.Row="1" Margin="0,0,0,10" Orientation="Horizontal">
+                <TextBlock Text="Цена:" VerticalAlignment="Center"/>
+                <TextBox x:Name="PriceTextBox" Width="100" Margin="10,0,0,0"/>
+            </StackPanel>
+
+            <!-- Описание -->
+            <StackPanel Grid.Row="2" Margin="0,0,0,10">
+                <TextBlock Text="Описание:"/>
+                <TextBox x:Name="DescriptionTextBox" Height="150" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+            </StackPanel>
+
+            <!-- Картинка -->
+            <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,0,0,10">
+                <Button Content="Выбрать обложку" Width="150" Click="OnSelectImageClicked"/>
+                <Image x:Name="CoverImage" Width="100" Height="100" Margin="10,0,0,0"/>
+            </StackPanel>
+
+            <!-- Теги -->
+            <StackPanel Grid.Row="4" Margin="0,0,0,10">
+
+                <!-- Новый тег -->
+                <TextBlock Text="Введите новый тег:" FontWeight="SemiBold"/>
+                <StackPanel Orientation="Horizontal" Margin="0,5,0,10">
+                    <TextBox x:Name="NewTagTextBox" Width="200" ToolTip="Введите новый тег"/>
+                    <Button Content="Добавить тег" Margin="5,0,0,0" Click="OnAddTagClicked"/>
+                </StackPanel>
+
+                <!-- Существующие теги -->
+                <TextBlock Text="Существующие теги:" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                <ListBox x:Name="AllTagsListBox" Height="200"
+                         DisplayMemberPath="Name"
+                         MouseDoubleClick="OnExistingTagDoubleClicked"
+                         VerticalAlignment="Top"/>
+
+                <!-- Выбранные теги -->
+                <TextBlock Text="Выбранные теги:" FontWeight="SemiBold" Margin="0,10,0,5"/>
+                <ListBox x:Name="TagsListBox" Height="200"
+                         MouseDoubleClick="OnTagDoubleClicked"
+                         VerticalAlignment="Top"/>
+                <TextBlock Text="Двойной клик по тегу для удаления" FontStyle="Italic" FontSize="11" Margin="0,5,0,0"/>
+            </StackPanel>
+
+            <!-- Кнопки -->
+            <StackPanel Orientation="Horizontal" Grid.Row="5" HorizontalAlignment="Right" Margin="0,10,0,0">
+                <Button Content="Добавить" Width="100" Margin="0,0,10,0" Click="OnAddClicked"/>
+                <Button Content="Отмена" Width="100" Click="OnCancelClicked"/>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</Window>
