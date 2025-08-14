@@ -1,6 +1,8 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Threading;
 using MySteamWPF.Core.Models;
 using MySteamWPF.Core.Services;
 using MySteamWPF.Core.Utilities;
@@ -23,10 +25,13 @@ public partial class GameCatalogue : UserControl
     {
         InitializeComponent();
 
-        _allGames = DataManager.LoadGames() ?? new List<Game>();
+        _allGames = DataManager.LoadGames();
         _filteredGames = _allGames;
 
         GamesListBox.ItemsSource = _filteredGames;
+        
+        Dispatcher.BeginInvoke(new Action(UpdateDeleteButtonsVisibility), DispatcherPriority.Loaded);
+        
         Logger.Log($"Game catalogue loaded with {_allGames.Count} games. User: {AccountManager.CurrentUser}");
     }
 
@@ -41,12 +46,13 @@ public partial class GameCatalogue : UserControl
 
             _filteredGames = _allGames.Where(g =>
                 (!string.IsNullOrEmpty(g.Name) &&
-                 g.Name.IndexOf(query, StringComparison.CurrentCultureIgnoreCase) >= 0) ||
+                 g.Name.Contains(query, StringComparison.CurrentCultureIgnoreCase)) ||
                 (g.GameTags.Any(t =>
-                    t.Tag.Name.IndexOf(query, StringComparison.CurrentCultureIgnoreCase) >= 0))
+                    t.Tag.Name.Contains(query, StringComparison.CurrentCultureIgnoreCase)))
             ).ToList();
 
             GamesListBox.ItemsSource = _filteredGames;
+            Dispatcher.BeginInvoke(new Action(UpdateDeleteButtonsVisibility), DispatcherPriority.Loaded);
             Logger.Log($"Search performed with query: '{query}'. Found {_filteredGames.Count} games. User: {AccountManager.CurrentUser}");
         }
         catch (Exception ex)
@@ -64,6 +70,7 @@ public partial class GameCatalogue : UserControl
         SearchTextBox.Text = string.Empty;
         _filteredGames = _allGames;
         GamesListBox.ItemsSource = _filteredGames;
+        Dispatcher.BeginInvoke(new Action(UpdateDeleteButtonsVisibility), DispatcherPriority.Loaded);
         Logger.Log($"Search reset. Showing all {_allGames.Count} games. User: {AccountManager.CurrentUser}");
     }
 
@@ -101,12 +108,6 @@ public partial class GameCatalogue : UserControl
                 return;
             }
 
-            if (selectedGame == null)
-            {
-                Logger.Log("Selected game is null.");
-                return;
-            }
-
             GamePage.CurrentGame = selectedGame;
             ((MainWindow)Application.Current.MainWindow).MainContentControl.Content = new GamePage();
             Logger.Log($"Navigated to game page: {selectedGame.Name}. User: {AccountManager.CurrentUser}");
@@ -117,5 +118,78 @@ public partial class GameCatalogue : UserControl
             MessageBox.Show("Ошибка при открытии страницы игры.");
         }
     }
-}
+    
+    /// <summary>
+    /// Delete selected game when clicked.
+    /// </summary>
+    private void OnDeleteGameFromCatalogueClicked(object sender, RoutedEventArgs e)
+    {
+        if (sender is not Button { DataContext: Game game }) return;
 
+        if (MessageBox.Show($"Вы уверены, что хотите удалить игру '{game.Name}'?",
+                "Подтверждение",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning) != MessageBoxResult.Yes)
+            return;
+
+        try
+        {
+            DataManager.DeleteGame(game.Id);
+            Logger.Log($"Game '{game.Name}' deleted by {AccountManager.CurrentUser?.Login}");
+            
+            _allGames.Remove(game);
+            _filteredGames.Remove(game);
+
+            GamesListBox.ItemsSource = null;
+            GamesListBox.ItemsSource = _filteredGames;
+            
+            var userGame = AccountManager.CurrentUser?.UserGames
+                ?.FirstOrDefault(ug => ug.GameId == game.Id);
+
+            if (userGame != null)
+            {
+                AccountManager.CurrentUser?.UserGames?.Remove(userGame);
+            }
+
+            Dispatcher.BeginInvoke(new Action(UpdateDeleteButtonsVisibility), DispatcherPriority.Loaded);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogException(ex, "Error deleting game from catalogue");
+            MessageBox.Show("Ошибка при удалении игры.");
+        }
+    }
+    
+    private void UpdateDeleteButtonsVisibility()
+    {
+        foreach (var item in GamesListBox.Items)
+        {
+            var container = (ContentPresenter)GamesListBox.ItemContainerGenerator.ContainerFromItem(item);
+            if (container == null) continue;
+            var deleteButton = FindDeleteButton(container);
+            if (deleteButton != null)
+            {
+                deleteButton.Visibility = AccountManager.CurrentUser?.IsGaben == true
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
+            }
+        }
+    }
+
+    private Button? FindDeleteButton(DependencyObject parent)
+    {
+        if (parent is Button { Name: "DeleteButton" } btn)
+            return btn;
+
+        var count = VisualTreeHelper.GetChildrenCount(parent);
+        for (var i = 0; i < count; i++)
+        {
+            var child = VisualTreeHelper.GetChild(parent, i);
+            var result = FindDeleteButton(child);
+            if (result != null)
+                return result;
+        }
+        return null;
+    }
+
+}

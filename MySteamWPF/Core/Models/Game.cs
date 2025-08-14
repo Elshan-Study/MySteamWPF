@@ -17,7 +17,7 @@ public class Game
     public string ImagePath { get; set; } = string.Empty;
 
     public double AverageRating =>
-        !Ratings.Any()
+        Ratings.Count == 0
             ? 0
             : Math.Round(Ratings.Average(r => r.Rating), 2);
 }
