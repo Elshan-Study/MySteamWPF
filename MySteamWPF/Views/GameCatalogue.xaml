@@ -82,7 +82,7 @@
             <Button x:Name="AddGameButton"
                     Content="Добавить игру"
                     Width="120"
-                    Margin="0,0,10,0"
+                    Margin="10,0,0,0"
                     Click="OnAddGameClicked"
                     Visibility="Collapsed"/>
         </StackPanel>

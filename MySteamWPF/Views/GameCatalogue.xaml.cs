@@ -200,15 +200,33 @@ public partial class GameCatalogue : UserControl
     {
         var addGameWindow = new AddGameWindow();
         if (addGameWindow.ShowDialog() != true) return;
+
         var newGame = addGameWindow.CreatedGame;
         if (newGame == null) return;
+
         _allGames.Add(newGame);
-        _filteredGames.Add(newGame);
+        if (string.IsNullOrWhiteSpace(SearchTextBox.Text))
+        {
+            _filteredGames = _allGames.ToList();
+        }
+        else
+        {
+            var query = SearchTextBox.Text.Trim();
+            _filteredGames = _allGames.Where(g =>
+                (!string.IsNullOrEmpty(g.Name) &&
+                 g.Name.Contains(query, StringComparison.CurrentCultureIgnoreCase)) ||
+                (g.GameTags.Any(t =>
+                    t.Tag.Name.Contains(query, StringComparison.CurrentCultureIgnoreCase)))
+            ).ToList();
+        }
+
         GamesListBox.ItemsSource = null;
         GamesListBox.ItemsSource = _filteredGames;
+
         Dispatcher.BeginInvoke(new Action(UpdateButtonsVisibility), DispatcherPriority.Loaded);
         Logger.Log($"New game '{newGame.Name}' added by {AccountManager.CurrentUser?.Login}");
     }
+
 
 
 }
