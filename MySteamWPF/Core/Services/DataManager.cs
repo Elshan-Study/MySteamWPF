@@ -74,7 +74,7 @@ public static class DataManager
     {
         using var scope = _serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        context.GameRatings.Add(rating);
+        context.GameRating.Add(rating);
         context.SaveChanges();
     }
 
@@ -82,7 +82,7 @@ public static class DataManager
     {
         using var scope = _serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        context.GameRatings.Update(rating);
+        context.GameRating.Update(rating);
         context.SaveChanges();
     }
     
@@ -124,6 +124,40 @@ public static class DataManager
         user.Balance -= game.Price;
         user.UserGames.Add(new UserGame { GameId = game.Id, UserId = user.Id });
 
+        context.SaveChanges();
+    }
+    
+    public static void DeleteGame(string gameId)
+    {
+        using var scope = _serviceProvider.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        var game = context.Games
+            .Include(g => g.Comments)
+            .Include(g => g.Ratings)
+            .Include(g => g.GameTags)
+            .FirstOrDefault(g => g.Id == gameId);
+
+        if (game == null) return;
+        
+        context.Comments.RemoveRange(game.Comments);
+        context.GameRating.RemoveRange(game.Ratings);
+        context.GameTags.RemoveRange(game.GameTags);
+        var userGames = context.UserGames.Where(ug => ug.GameId == gameId).ToList();
+        context.UserGames.RemoveRange(userGames);
+        context.Games.Remove(game);
+        context.SaveChanges();
+    }
+
+    public static void DeleteComment(string commentId)
+    {
+        using var scope = _serviceProvider.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        var comment = context.Comments.FirstOrDefault(c => c.Id == commentId);
+        if (comment == null) return;
+
+        context.Comments.Remove(comment);
         context.SaveChanges();
     }
 

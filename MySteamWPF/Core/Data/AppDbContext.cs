@@ -11,7 +11,7 @@ public class AppDbContext : DbContext
     public DbSet<Tag> Tags { get; set; } = null!;
     public DbSet<GameTag> GameTags { get; set; } = null!;
     public DbSet<UserGame> UserGames { get; set; } = null!;
-    public DbSet<GameRating> GameRatings { get; set; } = null!;
+    public DbSet<GameRating> GameRating { get; set; } = null!;
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {

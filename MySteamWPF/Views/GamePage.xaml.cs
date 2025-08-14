@@ -48,6 +48,8 @@ public partial class GamePage : UserControl
             Logger.LogException(ex, $"Error loading game page for game {game.Name}");
             MessageBox.Show("Произошла ошибка при загрузке игры.");
         }
+        
+        DeleteGameButton.Visibility = AccountManager.CurrentUser?.IsGaben == true ? Visibility.Visible : Visibility.Collapsed;
     }
 
     /// <summary>
@@ -218,7 +220,7 @@ public partial class GamePage : UserControl
             foreach (var comment in sorted)
             {
                 var author = comment.User;
-                var avatarPath = PathHelper.ResolvePath(author?.AvatarPath ?? string.Empty);
+                var avatarPath = PathHelper.ResolvePath(author.AvatarPath);
 
                 BitmapImage avatarImage;
 
@@ -230,7 +232,7 @@ public partial class GamePage : UserControl
                 {
                     var defaultAvatarPath = PathHelper.ResolvePath("Images/Avatars/DefaultAvatar.jpg");
                     avatarImage = new BitmapImage(new Uri(defaultAvatarPath));
-                    Logger.Log($"Avatar not found for user {author?.Login ?? "unknown"}, using default avatar.");
+                    Logger.Log($"Avatar not found for user {author.Login}, using default avatar.");
                 }
 
                 var horizontalPanel = new StackPanel { Orientation = Orientation.Horizontal };
@@ -245,7 +247,7 @@ public partial class GamePage : UserControl
                 var messageBlock = new StackPanel { Margin = new Thickness(5) };
                 messageBlock.Children.Add(new TextBlock
                 {
-                    Text = author?.Login ?? "Неизвестный пользователь",
+                    Text = author.Login,
                     FontWeight = FontWeights.Bold,
                     Foreground = System.Windows.Media.Brushes.White,
                     FontSize = 14
@@ -266,6 +268,20 @@ public partial class GamePage : UserControl
                 });
 
                 horizontalPanel.Children.Add(messageBlock);
+                
+                if (AccountManager.CurrentUser?.IsGaben == true)
+                {
+                    var deleteCommentButton = new Button
+                    {
+                        Content = "Удалить",
+                        Width = 80,
+                        HorizontalAlignment = HorizontalAlignment.Left,
+                        Margin = new Thickness(10, 0, 0, 0),
+                        Tag = comment
+                    };
+                    deleteCommentButton.Click += OnDeleteCommentClicked;
+                    messageBlock.Children.Add(deleteCommentButton);
+                }
 
                 CommentList.Children.Add(new Border
                 {
@@ -377,7 +393,65 @@ public partial class GamePage : UserControl
             MessageBox.Show("Ошибка при покупке игры: " + ex.Message);
         }
     }
+    
+    private void OnDeleteGameClicked(object sender, RoutedEventArgs e)
+    {
+        if (CurrentGame == null) return;
 
+        if (MessageBox.Show($"Вы уверены, что хотите удалить игру '{CurrentGame.Name}'?",
+                "Подтверждение",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning) != MessageBoxResult.Yes) return;
+        try
+        {
+            DataManager.DeleteGame(CurrentGame.Id);
+            Logger.Log($"Game '{CurrentGame.Name}' deleted by {AccountManager.CurrentUser?.Login}");
+                
+            if (AccountManager.CurrentUser != null)
+            {
+                var updatedUser = DataManager.LoadUsers()
+                    .FirstOrDefault(u => u.Id == AccountManager.CurrentUser.Id);
+                if (updatedUser != null)
+                    AccountManager.CurrentUser = updatedUser;
+            }
+                
+            CurrentGame = null;
+                
+            ((MainWindow)Application.Current.MainWindow).MainContentControl.Content = new GameCatalogue();
+        }
+        catch (Exception ex)
+        {
+            Logger.LogException(ex, "Error deleting game");
+            MessageBox.Show("Ошибка при удалении игры.");
+        }
+    }
+    
+    private void OnDeleteCommentClicked(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button { Tag: Comment comment })
+        {
+            if (MessageBox.Show("Удалить этот комментарий?", 
+                    "Подтверждение",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    DataManager.DeleteComment(comment.Id);
+                    Logger.Log($"Comment {comment.Id} deleted by {AccountManager.CurrentUser?.Login}");
+                    if (CurrentGame == null) return;
+                    CurrentGame.Comments = DataManager.LoadGames()
+                        .FirstOrDefault(g => g.Id == CurrentGame.Id)?.Comments ?? new List<Comment>();
+                    LoadComments(CurrentGame);
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogException(ex, "Error deleting comment");
+                    MessageBox.Show("Ошибка при удалении комментария.");
+                }
+            }
+        }
+    }
 
 }
 
