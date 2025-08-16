@@ -34,8 +34,9 @@ public partial class App : Application
     
         using var scope = Services.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        //context.Database.EnsureDeleted();
         context.Database.Migrate();
-
+        DbInitializer.Initialize(context);
         DataManager.Initialize(Services);
     }
     
@@ -56,13 +57,9 @@ public partial class App : Application
     
     private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
     {
-        if (sender is ScrollViewer scrollViewer)
-        {
-            if (e.Delta != 0)
-            {
-                scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta);
-                e.Handled = true;
-            }
-        }
+        if (sender is not ScrollViewer scrollViewer) return;
+        if (e.Delta == 0) return;
+        scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta);
+        e.Handled = true;
     }
 }

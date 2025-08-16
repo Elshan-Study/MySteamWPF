@@ -1,0 +1,303 @@
+{
+  "Games": [
+    {
+      "Id": "game-001",
+      "Name": "Frostblade",
+      "Description": "An epic journey through the icy realms of the north.",
+      "Price": 29.99,
+      "ImagePath": "Images/Frostblade.jpg",
+      "Tags": ["RPG", "Adventure", "Fantasy"]
+    },
+    {
+      "Id": "game-002",
+      "Name": "Cyber Run",
+      "Description": "Fast-paced cyberpunk racing game with neural controls.",
+      "Price": 19.99,
+      "ImagePath": "Images/CyberRun.jpg",
+      "Tags": ["Racing", "Cyberpunk", "Arcade"]
+    },
+    {
+      "Id": "game-003",
+      "Name": "Mystic Forest",
+      "Description": "A mysterious puzzle game set in an enchanted forest.",
+      "Price": 14.99,
+      "ImagePath": "Images/MysticForest.jpg",
+      "Tags": ["Puzzle", "Mystery", "Casual"]
+    },
+    {
+      "Id": "game-004",
+      "Name": "Titan Siege",
+      "Description": "Massive multiplayer battles in a mythological world.",
+      "Price": 49.99,
+      "ImagePath": "Images/TitanSiege.jpg",
+      "Tags": ["MMO", "PvP", "Action"]
+    },
+    {
+      "Id": "game-005",
+      "Name": "Pixel Kingdom",
+      "Description": "A nostalgic pixel-art strategy game.",
+      "Price": 9.99,
+      "ImagePath": "Images/PixelKingdom.jpg",
+      "Tags": ["Strategy", "Pixel", "Indie"]
+    },
+    {
+      "Id": "game-006",
+      "Name": "Quantum Dash",
+      "Description": "Sci-fi action with time-manipulation mechanics.",
+      "Price": 24.99,
+      "ImagePath": "Images/QuantumDash.jpg",
+      "Tags": ["Action", "Sci-Fi", "Arcade"]
+    },
+    {
+      "Id": "game-007",
+      "Name": "Sunken Realms",
+      "Description": "Explore the mysteries of an underwater civilization.",
+      "Price": 17.99,
+      "ImagePath": "Images/SunkenRealms.jpg",
+      "Tags": ["Exploration", "Ocean", "Casual"]
+    },
+    {
+      "Id": "game-008",
+      "Name": "Neon Arena",
+      "Description": "Top-down shooter with neon aesthetics and fast combat.",
+      "Price": 12.99,
+      "ImagePath": "Images/NeonArena.jpg",
+      "Tags": ["Action", "Sci-Fi", "Exploration"]
+    },
+    {
+      "Id": "game-009",
+      "Name": "Witchlight Academy",
+      "Description": "Live the life of a student in a magical school.",
+      "Price": 15.99,
+      "ImagePath": "Images/WitchlightAcademy.jpg",
+      "Tags": ["Visual Novel", "Magic", "Casual"]
+    },
+    {
+      "Id": "game-010",
+      "Name": "Steel Horizon",
+      "Description": "Naval warfare meets dieselpunk tactics.",
+      "Price": 39.99,
+      "ImagePath": "Images/SteelHorizon.jpg",
+      "Tags": ["Simulation", "Tactics", "Dieselpunk"]
+    }
+  ],
+  "Tags": [
+    { "Name": "RPG" },
+    { "Name": "Adventure" },
+    { "Name": "Fantasy" },
+    { "Name": "Racing" },
+    { "Name": "Cyberpunk" },
+    { "Name": "Arcade" },
+    { "Name": "Puzzle" },
+    { "Name": "Mystery" },
+    { "Name": "Casual" },
+    { "Name": "MMO" },
+    { "Name": "PvP" },
+    { "Name": "Strategy" },
+    { "Name": "Pixel" },
+    { "Name": "Indie" },
+    { "Name": "Action" },
+    { "Name": "Sci-Fi" },
+    { "Name": "Shooter" },
+    { "Name": "Exploration" },
+    { "Name": "Ocean" },
+    { "Name": "Visual Novel" },
+    { "Name": "Magic" },
+    { "Name": "Simulation" },
+    { "Name": "Tactics" },
+    { "Name": "War" },
+    { "Name": "Dieselpunk" }
+  ],
+  "Users": [
+    {
+      "Id": "e977d8e9-d529-4272-9fd2-4638a6ec582c",
+      "AvatarPath": "Images/Avatars/090f1cd9-2c92-4c3d-b15f-9a237eafdac6.jpg",
+      "Login": "root",
+      "Name": "ROO",
+      "Email": "root@rt.az",
+      "Password": "100000.Qi4CH/kM0PxssMxrPR1C5w==.jVXaRKVSSVAMVKHDflvzfrXV7KLiAz/LEPL8KidsTyo=",
+      "Balance": 500,
+      "IsGaben": true
+    },
+    {
+      "Id": "user-001",
+      "AvatarPath": "Images/Avatars/DefaultAvatar.jpg",
+      "Login": "alice88",
+      "Name": "Alice",
+      "Email": "alice@example.com",
+      "Password": "100000.OjaeQpzAVWDhF6bo+RLikg==.coGQ2Nm+F5xFsTYRP6StERqzWhncc9wb2eTxLjblJh8=",
+      "Balance": 50.0,
+      "IsGaben": false
+    },
+    {
+      "Id": "user-002",
+      "AvatarPath": "Images/Avatars/DefaultAvatar.jpg",
+      "Login": "bob_the_gamer",
+      "Name": "Bob",
+      "Email": "bob@example.com",
+      "Password": "100000.OjaeQpzAVWDhF6bo+RLikg==.coGQ2Nm+F5xFsTYRP6StERqzWhncc9wb2eTxLjblJh8=",
+      "Balance": 20.0,
+      "IsGaben": false
+    },
+    {
+      "Id": "user-003",
+      "AvatarPath": "Images/Avatars/DefaultAvatar.jpg",
+      "Login": "charlie",
+      "Name": "Charlie",
+      "Email": "charlie@example.com",
+      "Password": "100000.OjaeQpzAVWDhF6bo+RLikg==.coGQ2Nm+F5xFsTYRP6StERqzWhncc9wb2eTxLjblJh8=",
+      "Balance": 0.0,
+      "IsGaben": false
+    },
+    {
+      "Id": "91ea0882-b8af-4e0b-ba7b-9fc850fc082f",
+      "AvatarPath": "Images/Avatars/5a9ab09b-56db-4460-b369-cd4e644f2768.jpg",
+      "Login": "koichi",
+      "Name": "Коити",
+      "Email": "koichi@jojo.dio",
+      "Password": "100000.kCpe3jH5I39OAD85ENNAFA==.17AnAFxjxjAEk5qviY+gx/ftch1S7TGyPITOtRxepWo=",
+      "Balance": 0.0,
+      "IsGaben": false
+    }
+  ],
+  "Comments": [
+    {
+      "Id": "cmt-001",
+      "UserId": "user-001",
+      "GameId": "game-001",
+      "Message": "Погружающая атмосфера! Очень понравился снег и сюжет.",
+      "DatePosted": "2025-06-01T10:00:00"
+    },
+    {
+      "Id": "cmt-002",
+      "UserId": "user-002",
+      "GameId": "game-001",
+      "Message": "Местами затянуто, но визуал великолепен.",
+      "DatePosted": "2025-06-02T14:15:00"
+    },
+    {
+      "Id": "cmt-003",
+      "UserId": "user-003",
+      "GameId": "game-002",
+      "Message": "Классные тачки! Играл без остановки.",
+      "DatePosted": "2025-06-02T15:10:00"
+    },
+    {
+      "Id": "cmt-004",
+      "UserId": "user-001",
+      "GameId": "game-003",
+      "Message": "Легкая и красивая игра на вечер.",
+      "DatePosted": "2025-06-03T09:00:00"
+    },
+    {
+      "Id": "cmt-005",
+      "UserId": "user-002",
+      "GameId": "game-004",
+      "Message": "Лаги в PvP, но сам мир интересный.",
+      "DatePosted": "2025-06-03T10:00:00"
+    },
+    {
+      "Id": "cmt-006",
+      "UserId": "user-003",
+      "GameId": "game-005",
+      "Message": "Пиксели — любовь. Жаль, что короткая.",
+      "DatePosted": "2025-06-04T11:30:00"
+    },
+    {
+      "Id": "cmt-007",
+      "UserId": "user-001",
+      "GameId": "game-006",
+      "Message": "Нравится управление временем, необычно!",
+      "DatePosted": "2025-06-05T12:00:00"
+    },
+    {
+      "Id": "cmt-008",
+      "UserId": "user-002",
+      "GameId": "game-007",
+      "Message": "Море, квесты, загадки — просто топ.",
+      "DatePosted": "2025-06-06T13:00:00"
+    },
+    {
+      "Id": "cmt-009",
+      "UserId": "user-003",
+      "GameId": "game-008",
+      "Message": "Визуально красиво, но скучно одному.",
+      "DatePosted": "2025-06-07T14:00:00"
+    },
+    {
+      "Id": "cmt-010",
+      "UserId": "user-001",
+      "GameId": "game-009",
+      "Message": "Школа магии навеяла Гарри Поттера.",
+      "DatePosted": "2025-06-08T15:00:00"
+    },
+    {
+      "Id": "cmt-011",
+      "UserId": "user-002",
+      "GameId": "game-010",
+      "Message": "Отличный дизельпанк флот, приятно удивлен!",
+      "DatePosted": "2025-06-09T16:00:00"
+    }
+  ],
+  "Ratings": [
+    { "UserId": "user-001", "GameId": "game-001", "Rating": 5 },
+    { "UserId": "user-002", "GameId": "game-001", "Rating": 4 },
+    { "UserId": "user-001", "GameId": "game-002", "Rating": 3 },
+    { "UserId": "user-003", "GameId": "game-002", "Rating": 4 },
+    { "UserId": "user-002", "GameId": "game-003", "Rating": 5 },
+    { "UserId": "user-001", "GameId": "game-004", "Rating": 4 },
+    { "UserId": "user-003", "GameId": "game-004", "Rating": 5 },
+    { "UserId": "user-002", "GameId": "game-005", "Rating": 3 },
+    { "UserId": "user-003", "GameId": "game-006", "Rating": 4 },
+    { "UserId": "user-001", "GameId": "game-007", "Rating": 5 },
+    { "UserId": "user-002", "GameId": "game-008", "Rating": 4 },
+    { "UserId": "user-003", "GameId": "game-009", "Rating": 5 },
+    { "UserId": "user-001", "GameId": "game-010", "Rating": 4 },
+    { "UserId": "user-002", "GameId": "game-010", "Rating": 4 }
+  ],
+  "UserGames": [
+    { "UserId": "user-001", "GameId": "game-001", "IsHidden": false },
+    { "UserId": "user-001", "GameId": "game-003", "IsHidden": false },
+    { "UserId": "user-001", "GameId": "game-006", "IsHidden": true },
+    { "UserId": "user-001", "GameId": "game-009", "IsHidden": true },
+    { "UserId": "user-002", "GameId": "game-001", "IsHidden": false },
+    { "UserId": "user-002", "GameId": "game-004", "IsHidden": false },
+    { "UserId": "user-002", "GameId": "game-007", "IsHidden": false },
+    { "UserId": "user-002", "GameId": "game-010", "IsHidden": false },
+    { "UserId": "user-003", "GameId": "game-002", "IsHidden": false },
+    { "UserId": "user-003", "GameId": "game-005", "IsHidden": false },
+    { "UserId": "user-003", "GameId": "game-008", "IsHidden": false }
+  ],
+  "GameTags": [
+    { "GameId": "game-001", "TagId": 1 },
+    { "GameId": "game-001", "TagId": 2 },
+    { "GameId": "game-001", "TagId": 3 },
+    { "GameId": "game-002", "TagId": 4 },
+    { "GameId": "game-002", "TagId": 5 },
+    { "GameId": "game-002", "TagId": 6 },
+    { "GameId": "game-003", "TagId": 7 },
+    { "GameId": "game-003", "TagId": 8 },
+    { "GameId": "game-003", "TagId": 9 },
+    { "GameId": "game-004", "TagId": 10 },
+    { "GameId": "game-004", "TagId": 11 },
+    { "GameId": "game-004", "TagId": 15 },
+    { "GameId": "game-005", "TagId": 12 },
+    { "GameId": "game-005", "TagId": 13 },
+    { "GameId": "game-005", "TagId": 14 },
+    { "GameId": "game-006", "TagId": 15 },
+    { "GameId": "game-006", "TagId": 16 },
+    { "GameId": "game-006", "TagId": 6 },
+    { "GameId": "game-007", "TagId": 17 },
+    { "GameId": "game-007", "TagId": 18 },
+    { "GameId": "game-007", "TagId": 19 },
+    { "GameId": "game-008", "TagId": 15 },
+    { "GameId": "game-008", "TagId": 16 },
+    { "GameId": "game-008", "TagId": 17 },
+    { "GameId": "game-009", "TagId": 20 },
+    { "GameId": "game-009", "TagId": 21 },
+    { "GameId": "game-009", "TagId": 9 },
+    { "GameId": "game-010", "TagId": 22 },
+    { "GameId": "game-010", "TagId": 23 },
+    { "GameId": "game-010", "TagId": 25 }
+  ]
+}

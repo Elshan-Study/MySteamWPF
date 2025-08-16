@@ -18,20 +18,15 @@
       </Content>
       <Folder Include="Images\Avatars\" />
       <None Remove="Core\Data\games.json" />
-      <Content Include="Core\Data\games.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
       <None Remove="Core\Data\comments.json" />
-      <Content Include="Core\Data\comments.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
       <None Remove="Core\Data\users.json" />
-      <Content Include="Core\Data\users.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
       <None Update="appsettings.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Remove="Core\Data\seed.json" />
+      <Content Include="Core\Data\seed.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
     <ItemGroup>
